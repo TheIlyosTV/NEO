@@ -31,13 +31,13 @@ export default function HomePage() {
       subtitle: t.heroSlide1Subtitle || "Discover the latest trends in fashion",
     },
     {
-      image: "/public/images/Slim-Fit2.png",
+      image: "/backgroundimg/hero2.png",
       title: t.heroSlide2Title || "Premium Footwear",
       subtitle:
         t.heroSlide2Subtitle || "Step into style with our exclusive designs",
     },
     {
-      image: "/placeholder.svg?height=1080&width=1920",
+      image: "/backgroundimg/hero3.png",
       title: t.heroSlide3Title || "Accessories Collection",
       subtitle:
         t.heroSlide3Subtitle ||
@@ -171,8 +171,8 @@ export default function HomePage() {
                         ? language === "UZB"
                           ? "Barchasi"
                           : language === "RUS"
-                            ? "Все"
-                            : "All"
+                          ? "Все"
+                          : "All"
                         : t[category] ||
                           category.charAt(0).toUpperCase() + category.slice(1)}
                       {activeCategory === category && (

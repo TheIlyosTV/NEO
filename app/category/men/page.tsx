@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { motion } from "framer-motion"
-import { ChevronRight, Filter, ChevronDown, ChevronUp } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Label } from "@/components/ui/label"
-import ProductCard from "@/components/product-card"
-import { useLanguage } from "@/context/language-context"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { ChevronRight, Filter, ChevronDown, ChevronUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import ProductCard from "@/components/product-card";
+import { useLanguage } from "@/context/language-context";
 
 // Sample product data
 const products = [
@@ -18,7 +18,7 @@ const products = [
     id: "men-1",
     name: "Classic Oxford Shirt",
     price: 59.99,
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/men/Classic-Oxford-Shirt.png",
     category: "men",
     rating: 4.5,
   },
@@ -26,7 +26,7 @@ const products = [
     id: "men-2",
     name: "Slim Fit Chinos",
     price: 49.99,
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/men/Slim-Fit-Chinos.png",
     category: "men",
     rating: 4.3,
   },
@@ -34,7 +34,7 @@ const products = [
     id: "men-3",
     name: "Wool Blend Blazer",
     price: 129.99,
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/men/Wool-Blend-Blazer.png",
     category: "men",
     rating: 4.7,
   },
@@ -42,7 +42,7 @@ const products = [
     id: "men-4",
     name: "Crew Neck T-Shirt",
     price: 24.99,
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/men/Crew-Neck-T-Shirt.png",
     category: "men",
     rating: 4.2,
   },
@@ -50,7 +50,7 @@ const products = [
     id: "men-5",
     name: "Denim Jeans",
     price: 69.99,
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/men/Denim-Jeans.png",
     category: "men",
     rating: 4.6,
   },
@@ -58,7 +58,7 @@ const products = [
     id: "men-6",
     name: "Merino Wool Sweater",
     price: 89.99,
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/men/Merino-Wool-Sweater.png",
     category: "men",
     rating: 4.8,
   },
@@ -66,7 +66,7 @@ const products = [
     id: "men-7",
     name: "Leather Belt",
     price: 39.99,
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/men/Leather-Belt.png",
     category: "men",
     rating: 4.4,
   },
@@ -74,7 +74,7 @@ const products = [
     id: "men-8",
     name: "Tailored Suit",
     price: 299.99,
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/men/Tailored-Suit.png",
     category: "men",
     rating: 4.9,
   },
@@ -82,7 +82,7 @@ const products = [
     id: "men-9",
     name: "Casual Polo Shirt",
     price: 34.99,
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/men/Casual-Polo-Shirt.png",
     category: "men",
     rating: 4.3,
   },
@@ -90,7 +90,7 @@ const products = [
     id: "men-10",
     name: "Lightweight Jacket",
     price: 79.99,
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/men/Lightweight-Jacket.png",
     category: "men",
     rating: 4.5,
   },
@@ -98,7 +98,7 @@ const products = [
     id: "men-11",
     name: "Formal Dress Shoes",
     price: 119.99,
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/men/Formal-Dress-Shoes.png",
     category: "men",
     rating: 4.7,
   },
@@ -106,49 +106,52 @@ const products = [
     id: "men-12",
     name: "Patterned Socks Set",
     price: 19.99,
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/men/Patterned-Socks-Set.png",
     category: "men",
     rating: 4.2,
   },
-]
+];
 
 export default function MenPage() {
-  const { t, language } = useLanguage()
-  const [filtersOpen, setFiltersOpen] = useState(false)
-  const [sortOpen, setSortOpen] = useState(false)
-  const [activeFilters, setActiveFilters] = useState<string[]>([])
-  const [sortOption, setSortOption] = useState("featured")
-  const [currentPage, setCurrentPage] = useState(1)
-  const productsPerPage = 8
+  const { t, language } = useLanguage();
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [sortOpen, setSortOpen] = useState(false);
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [sortOption, setSortOption] = useState("featured");
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 8;
 
   // Force re-render when language changes
-  const [, forceUpdate] = useState({})
+  const [, forceUpdate] = useState({});
   useEffect(() => {
-    console.log("MenPage: Language changed to", language)
-    forceUpdate({})
-  }, [language])
+    console.log("MenPage: Language changed to", language);
+    forceUpdate({});
+  }, [language]);
 
   const toggleFilter = (filter: string) => {
     if (activeFilters.includes(filter)) {
-      setActiveFilters(activeFilters.filter((f) => f !== filter))
+      setActiveFilters(activeFilters.filter((f) => f !== filter));
     } else {
-      setActiveFilters([...activeFilters, filter])
+      setActiveFilters([...activeFilters, filter]);
     }
-  }
+  };
 
   // Sort products based on selected option
   const sortedProducts = [...products].sort((a, b) => {
-    if (sortOption === "price-low") return a.price - b.price
-    if (sortOption === "price-high") return b.price - a.price
-    if (sortOption === "rating") return b.rating - a.rating
-    return 0 // Default: featured
-  })
+    if (sortOption === "price-low") return a.price - b.price;
+    if (sortOption === "price-high") return b.price - a.price;
+    if (sortOption === "rating") return b.rating - a.rating;
+    return 0; // Default: featured
+  });
 
   // Pagination
-  const indexOfLastProduct = currentPage * productsPerPage
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage
-  const currentProducts = sortedProducts.slice(indexOfFirstProduct, indexOfLastProduct)
-  const totalPages = Math.ceil(sortedProducts.length / productsPerPage)
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = sortedProducts.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+  const totalPages = Math.ceil(sortedProducts.length / productsPerPage);
 
   const container = {
     hidden: { opacity: 0 },
@@ -158,12 +161,12 @@ export default function MenPage() {
         staggerChildren: 0.1,
       },
     },
-  }
+  };
 
   const item = {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0 },
-  }
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -177,7 +180,9 @@ export default function MenPage() {
       </div>
 
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">{t["men.title"] || "Men's Collection"}</h1>
+        <h1 className="text-3xl font-bold">
+          {t["men.title"] || "Men's Collection"}
+        </h1>
         <p className="text-gray-600">
           {products.length} {t["category.products"] || "products"}
         </p>
@@ -186,7 +191,10 @@ export default function MenPage() {
       {/* Filters and Sort */}
       <div className="flex flex-col md:flex-row justify-between mb-8">
         <div className="mb-4 md:mb-0">
-          <button className="flex items-center gap-2 text-sm font-medium" onClick={() => setFiltersOpen(!filtersOpen)}>
+          <button
+            className="flex items-center gap-2 text-sm font-medium"
+            onClick={() => setFiltersOpen(!filtersOpen)}
+          >
             <Filter size={18} />
             {t["category.filters"] || "Filters"}
             {filtersOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
@@ -200,7 +208,9 @@ export default function MenPage() {
               className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-6 bg-gray-50 p-4 rounded-lg"
             >
               <div>
-                <h3 className="font-medium mb-3">{t["men.category"] || "Category"}</h3>
+                <h3 className="font-medium mb-3">
+                  {t["men.category"] || "Category"}
+                </h3>
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2">
                     <Checkbox
@@ -208,7 +218,9 @@ export default function MenPage() {
                       checked={activeFilters.includes("shirts")}
                       onCheckedChange={() => toggleFilter("shirts")}
                     />
-                    <Label htmlFor="shirts">{t["men.shirts"] || "Shirts"}</Label>
+                    <Label htmlFor="shirts">
+                      {t["men.shirts"] || "Shirts"}
+                    </Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Checkbox
@@ -232,7 +244,9 @@ export default function MenPage() {
                       checked={activeFilters.includes("accessories")}
                       onCheckedChange={() => toggleFilter("accessories")}
                     />
-                    <Label htmlFor="accessories">{t["men.accessories"] || "Accessories"}</Label>
+                    <Label htmlFor="accessories">
+                      {t["men.accessories"] || "Accessories"}
+                    </Label>
                   </div>
                 </div>
               </div>
@@ -241,15 +255,27 @@ export default function MenPage() {
                 <h3 className="font-medium mb-3">{t["men.size"] || "Size"}</h3>
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2">
-                    <Checkbox id="s" checked={activeFilters.includes("s")} onCheckedChange={() => toggleFilter("s")} />
+                    <Checkbox
+                      id="s"
+                      checked={activeFilters.includes("s")}
+                      onCheckedChange={() => toggleFilter("s")}
+                    />
                     <Label htmlFor="s">S</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Checkbox id="m" checked={activeFilters.includes("m")} onCheckedChange={() => toggleFilter("m")} />
+                    <Checkbox
+                      id="m"
+                      checked={activeFilters.includes("m")}
+                      onCheckedChange={() => toggleFilter("m")}
+                    />
                     <Label htmlFor="m">M</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Checkbox id="l" checked={activeFilters.includes("l")} onCheckedChange={() => toggleFilter("l")} />
+                    <Checkbox
+                      id="l"
+                      checked={activeFilters.includes("l")}
+                      onCheckedChange={() => toggleFilter("l")}
+                    />
                     <Label htmlFor="l">L</Label>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -264,7 +290,9 @@ export default function MenPage() {
               </div>
 
               <div>
-                <h3 className="font-medium mb-3">{t["men.color"] || "Color"}</h3>
+                <h3 className="font-medium mb-3">
+                  {t["men.color"] || "Color"}
+                </h3>
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2">
                     <Checkbox
@@ -302,7 +330,9 @@ export default function MenPage() {
               </div>
 
               <div>
-                <h3 className="font-medium mb-3">{t["men.price"] || "Price"}</h3>
+                <h3 className="font-medium mb-3">
+                  {t["men.price"] || "Price"}
+                </h3>
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2">
                     <Checkbox
@@ -310,7 +340,9 @@ export default function MenPage() {
                       checked={activeFilters.includes("under50")}
                       onCheckedChange={() => toggleFilter("under50")}
                     />
-                    <Label htmlFor="under50">{t["men.under50"] || "Under $50"}</Label>
+                    <Label htmlFor="under50">
+                      {t["men.under50"] || "Under $50"}
+                    </Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Checkbox
@@ -318,7 +350,9 @@ export default function MenPage() {
                       checked={activeFilters.includes("50to100")}
                       onCheckedChange={() => toggleFilter("50to100")}
                     />
-                    <Label htmlFor="50to100">{t["men.50to100"] || "$50 - $100"}</Label>
+                    <Label htmlFor="50to100">
+                      {t["men.50to100"] || "$50 - $100"}
+                    </Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Checkbox
@@ -326,7 +360,9 @@ export default function MenPage() {
                       checked={activeFilters.includes("100to200")}
                       onCheckedChange={() => toggleFilter("100to200")}
                     />
-                    <Label htmlFor="100to200">{t["men.100to200"] || "$100 - $200"}</Label>
+                    <Label htmlFor="100to200">
+                      {t["men.100to200"] || "$100 - $200"}
+                    </Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Checkbox
@@ -334,7 +370,9 @@ export default function MenPage() {
                       checked={activeFilters.includes("over200")}
                       onCheckedChange={() => toggleFilter("over200")}
                     />
-                    <Label htmlFor="over200">{t["men.over200"] || "Over $200"}</Label>
+                    <Label htmlFor="over200">
+                      {t["men.over200"] || "Over $200"}
+                    </Label>
                   </div>
                 </div>
               </div>
@@ -343,15 +381,18 @@ export default function MenPage() {
         </div>
 
         <div className="relative">
-          <button className="flex items-center gap-2 text-sm font-medium" onClick={() => setSortOpen(!sortOpen)}>
+          <button
+            className="flex items-center gap-2 text-sm font-medium"
+            onClick={() => setSortOpen(!sortOpen)}
+          >
             {t["category.sortBy"] || "Sort by:"}{" "}
             {sortOption === "featured"
               ? t["category.featured"] || "Featured"
               : sortOption === "price-low"
-                ? t["category.priceLowToHigh"] || "Price: Low to High"
-                : sortOption === "price-high"
-                  ? t["category.priceHighToLow"] || "Price: High to Low"
-                  : t["category.rating"] || "Rating"}
+              ? t["category.priceLowToHigh"] || "Price: Low to High"
+              : sortOption === "price-high"
+              ? t["category.priceHighToLow"] || "Price: High to Low"
+              : t["category.rating"] || "Rating"}
             {sortOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
           </button>
 
@@ -364,37 +405,45 @@ export default function MenPage() {
             >
               <div className="py-1">
                 <button
-                  className={`block px-4 py-2 text-sm w-full text-left ${sortOption === "featured" ? "bg-gray-100" : ""}`}
+                  className={`block px-4 py-2 text-sm w-full text-left ${
+                    sortOption === "featured" ? "bg-gray-100" : ""
+                  }`}
                   onClick={() => {
-                    setSortOption("featured")
-                    setSortOpen(false)
+                    setSortOption("featured");
+                    setSortOpen(false);
                   }}
                 >
                   {t["category.featured"] || "Featured"}
                 </button>
                 <button
-                  className={`block px-4 py-2 text-sm w-full text-left ${sortOption === "price-low" ? "bg-gray-100" : ""}`}
+                  className={`block px-4 py-2 text-sm w-full text-left ${
+                    sortOption === "price-low" ? "bg-gray-100" : ""
+                  }`}
                   onClick={() => {
-                    setSortOption("price-low")
-                    setSortOpen(false)
+                    setSortOption("price-low");
+                    setSortOpen(false);
                   }}
                 >
                   {t["category.priceLowToHigh"] || "Price: Low to High"}
                 </button>
                 <button
-                  className={`block px-4 py-2 text-sm w-full text-left ${sortOption === "price-high" ? "bg-gray-100" : ""}`}
+                  className={`block px-4 py-2 text-sm w-full text-left ${
+                    sortOption === "price-high" ? "bg-gray-100" : ""
+                  }`}
                   onClick={() => {
-                    setSortOption("price-high")
-                    setSortOpen(false)
+                    setSortOption("price-high");
+                    setSortOpen(false);
                   }}
                 >
                   {t["category.priceHighToLow"] || "Price: High to Low"}
                 </button>
                 <button
-                  className={`block px-4 py-2 text-sm w-full text-left ${sortOption === "rating" ? "bg-gray-100" : ""}`}
+                  className={`block px-4 py-2 text-sm w-full text-left ${
+                    sortOption === "rating" ? "bg-gray-100" : ""
+                  }`}
                   onClick={() => {
-                    setSortOption("rating")
-                    setSortOpen(false)
+                    setSortOption("rating");
+                    setSortOpen(false);
                   }}
                 >
                   {t["category.rating"] || "Rating"}
@@ -409,14 +458,23 @@ export default function MenPage() {
       {activeFilters.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-6">
           {activeFilters.map((filter) => (
-            <div key={filter} className="flex items-center bg-gray-100 rounded-full px-3 py-1 text-sm">
+            <div
+              key={filter}
+              className="flex items-center bg-gray-100 rounded-full px-3 py-1 text-sm"
+            >
               <span>{filter}</span>
-              <button onClick={() => toggleFilter(filter)} className="ml-2 text-gray-500 hover:text-gray-700">
+              <button
+                onClick={() => toggleFilter(filter)}
+                className="ml-2 text-gray-500 hover:text-gray-700"
+              >
                 <X className="h-3 w-3" />
               </button>
             </div>
           ))}
-          <button onClick={() => setActiveFilters([])} className="text-sm text-gray-500 hover:text-gray-700 ml-2">
+          <button
+            onClick={() => setActiveFilters([])}
+            className="text-sm text-gray-500 hover:text-gray-700 ml-2"
+          >
             {t["category.clearFilters"] || "Clear all"}
           </button>
         </div>
@@ -461,7 +519,9 @@ export default function MenPage() {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+              onClick={() =>
+                setCurrentPage(Math.min(totalPages, currentPage + 1))
+              }
               disabled={currentPage === totalPages}
             >
               {t["category.next"] || "Next"}
@@ -470,7 +530,7 @@ export default function MenPage() {
         </div>
       )}
     </div>
-  )
+  );
 }
 
 function X(props: React.ComponentProps<typeof import("lucide-react").X>) {
@@ -490,5 +550,5 @@ function X(props: React.ComponentProps<typeof import("lucide-react").X>) {
       <path d="M18 6 6 18" />
       <path d="m6 6 12 12" />
     </svg>
-  )
+  );
 }
