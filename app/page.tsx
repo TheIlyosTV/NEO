@@ -57,26 +57,26 @@ export default function HomePage() {
     },
     {
       id: 2,
-      name: t.product2Name || "Relaxed Linen Dress",
-      price: 79.99,
-      category: "women",
-      image: "/placeholder.svg?height=600&width=500",
-      rating: 4.8,
+      name: t.product1Name || "Aventus Creed",
+      price: 99.99,
+      category: "perfumery",
+      image: "/images/perfumery/aventus-creed.jpg",
+      rating: 4.5,
     },
     {
       id: 3,
       name: t.product3Name || "Premium Leather Sneakers",
       price: 129.99,
       category: "shoes",
-      image: "/placeholder.svg?height=600&width=500",
+      image: "/images/Premium-Leather-Sneakers.png",
       rating: 4.7,
     },
     {
       id: 4,
-      name: t.product4Name || "Minimalist Watch",
+      name: t.product4Name || "Oversize Hudi",
       price: 159.99,
-      category: "accessories",
-      image: "/placeholder.svg?height=600&width=500",
+      category: "men",
+      image: "/images/men/Oversize-Hudi.png",
       rating: 4.9,
     },
     {
@@ -84,7 +84,7 @@ export default function HomePage() {
       name: t.product5Name || "Tailored Wool Blazer",
       price: 199.99,
       category: "men",
-      image: "/placeholder.svg?height=600&width=500",
+      image: "/images/men/Tailored-Wool-Blazer.png",
       rating: 4.6,
     },
     {
@@ -92,7 +92,7 @@ export default function HomePage() {
       name: t.product6Name || "Pleated Midi Skirt",
       price: 89.99,
       category: "women",
-      image: "/placeholder.svg?height=600&width=500",
+      image: "/images/women/Pleated-Midi-Skirt.png",
       rating: 4.4,
     },
     {
@@ -100,15 +100,15 @@ export default function HomePage() {
       name: t.product7Name || "Suede Chelsea Boots",
       price: 149.99,
       category: "shoes",
-      image: "/placeholder.svg?height=600&width=500",
+      image: "/images/shoes/Suede-Chelsea-Boots.png",
       rating: 4.8,
     },
     {
       id: 8,
       name: t.product8Name || "Leather Crossbody Bag",
       price: 119.99,
-      category: "accessories",
-      image: "/placeholder.svg?height=600&width=500",
+      category: "women",
+      image: "/images/women/Leather-Crossbody-Bag.png",
       rating: 4.7,
     },
   ];
@@ -226,9 +226,14 @@ export default function HomePage() {
             </motion.h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {["men", "women", "shoes", "perfumery"].map((category, index) => (
+              {[
+                { id: "men", image: "/images/men/mens.png" },
+                { id: "women", image: "/images/women/womens.png" },
+                { id: "shoes", image: "/images/shoes/shoes1.png" },
+                { id: "perfumery", image: "/images/perfumery/atirlar.png" },
+              ].map((category, index) => (
                 <motion.div
-                  key={category}
+                  key={category.id}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -236,18 +241,19 @@ export default function HomePage() {
                   className="relative overflow-hidden rounded-lg group h-80"
                 >
                   <Image
-                    src={`/placeholder.svg?height=600&width=500`}
-                    alt={t[category] || category}
+                    src={category.image}
+                    alt={t[category.id] || category.id}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                   />
-                  <div className="absolute inset-0 bg-black bg-opacity-30 group-hover:bg-opacity-20 transition-all duration-300" />
+                  <div className="absolute inset-0  group-hover:bg-opacity-20 transition-all duration-300" />
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
                     <h3 className="text-2xl font-bold mb-2">
-                      {t[category] || category}
+                      {t[category.id] || category.id}
                     </h3>
                     <Link
-                      href={`/category/${category.toLowerCase()}`}
+                      href={`/category/${category.id.toLowerCase()}`}
                       className="flex items-center text-sm font-medium bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full hover:bg-white/30 transition-all group-hover:scale-105"
                     >
                       {t.shopNow || "Shop Now"}

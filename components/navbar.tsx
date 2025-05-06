@@ -272,12 +272,7 @@ export function Navbar() {
               </Link>
             </motion.div>
 
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="relative"
-              data-cart-container
-            >
+            <div className="relative" data-cart-container>
               <button
                 onClick={() => setCartOpen(!cartOpen)}
                 className="relative text-gray-700 hover:text-gray-900 transition-colors"
@@ -302,7 +297,7 @@ export function Navbar() {
                   <CartMenu onClose={() => setCartOpen(false)} />
                 </div>
               )}
-            </motion.div>
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -329,12 +324,7 @@ export function Navbar() {
               </Link>
             </motion.div>
 
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="relative"
-              data-cart-container
-            >
+            <div className="relative" data-cart-container>
               <button
                 onClick={() => setCartOpen(!cartOpen)}
                 className="relative text-gray-700 hover:text-gray-900 transition-colors"
@@ -359,7 +349,7 @@ export function Navbar() {
                   <CartMenu onClose={() => setCartOpen(false)} />
                 </div>
               )}
-            </motion.div>
+            </div>
 
             <motion.button
               whileHover={{ scale: 1.1 }}

@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { motion } from "framer-motion"
-import { ChevronRight, Filter, ChevronDown, ChevronUp } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Label } from "@/components/ui/label"
-import ProductCard from "@/components/product-card"
-import { useLanguage } from "@/context/language-context"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { ChevronRight, Filter, ChevronDown, ChevronUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import ProductCard from "@/components/product-card";
+import { useLanguage } from "@/context/language-context";
 
 // Sample product data
 const products = [
@@ -18,7 +18,7 @@ const products = [
     id: "women-1",
     name: "Oversized Cotton Shirt",
     price: 49.99,
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/women/Oversized-Cotton-Shirt.png",
     category: "women",
     rating: 4.5,
   },
@@ -26,7 +26,7 @@ const products = [
     id: "women-2",
     name: "High-Waisted Jeans",
     price: 79.99,
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/women/High-Waisted-Jeans.png",
     category: "women",
     rating: 4.2,
   },
@@ -34,7 +34,7 @@ const products = [
     id: "women-3",
     name: "Knit Sweater",
     price: 59.99,
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/women/Knit-Sweater.png",
     category: "women",
     rating: 4.7,
   },
@@ -42,7 +42,7 @@ const products = [
     id: "women-4",
     name: "Midi Dress",
     price: 89.99,
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/women/Midi-Dress.png",
     category: "women",
     rating: 4.0,
   },
@@ -78,45 +78,48 @@ const products = [
     category: "women",
     rating: 3.9,
   },
-]
+];
 
 export default function WomenPage() {
-  const { t, language } = useLanguage()
-  const [filtersOpen, setFiltersOpen] = useState(false)
-  const [sortOpen, setSortOpen] = useState(false)
-  const [activeFilters, setActiveFilters] = useState<string[]>([])
-  const [sortOption, setSortOption] = useState("featured")
-  const [currentPage, setCurrentPage] = useState(1)
-  const productsPerPage = 8
+  const { t, language } = useLanguage();
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [sortOpen, setSortOpen] = useState(false);
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [sortOption, setSortOption] = useState("featured");
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 8;
 
   // Force re-render when language changes
-  const [, forceUpdate] = useState({})
+  const [, forceUpdate] = useState({});
   useEffect(() => {
-    console.log("WomenPage: Language changed to", language)
-    forceUpdate({})
-  }, [language])
+    console.log("WomenPage: Language changed to", language);
+    forceUpdate({});
+  }, [language]);
 
   const toggleFilter = (filter: string) => {
     if (activeFilters.includes(filter)) {
-      setActiveFilters(activeFilters.filter((f) => f !== filter))
+      setActiveFilters(activeFilters.filter((f) => f !== filter));
     } else {
-      setActiveFilters([...activeFilters, filter])
+      setActiveFilters([...activeFilters, filter]);
     }
-  }
+  };
 
   // Sort products based on selected option
   const sortedProducts = [...products].sort((a, b) => {
-    if (sortOption === "price-low") return a.price - b.price
-    if (sortOption === "price-high") return b.price - a.price
-    if (sortOption === "rating") return b.rating - a.rating
-    return 0 // Default: featured
-  })
+    if (sortOption === "price-low") return a.price - b.price;
+    if (sortOption === "price-high") return b.price - a.price;
+    if (sortOption === "rating") return b.rating - a.rating;
+    return 0; // Default: featured
+  });
 
   // Pagination
-  const indexOfLastProduct = currentPage * productsPerPage
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage
-  const currentProducts = sortedProducts.slice(indexOfFirstProduct, indexOfLastProduct)
-  const totalPages = Math.ceil(sortedProducts.length / productsPerPage)
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = sortedProducts.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+  const totalPages = Math.ceil(sortedProducts.length / productsPerPage);
 
   const container = {
     hidden: { opacity: 0 },
@@ -126,12 +129,12 @@ export default function WomenPage() {
         staggerChildren: 0.1,
       },
     },
-  }
+  };
 
   const item = {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0 },
-  }
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -145,7 +148,9 @@ export default function WomenPage() {
       </div>
 
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">{t["women.title"] || "Women's Collection"}</h1>
+        <h1 className="text-3xl font-bold">
+          {t["women.title"] || "Women's Collection"}
+        </h1>
         <p className="text-gray-600">
           {products.length} {t["category.products"] || "products"}
         </p>
@@ -154,7 +159,10 @@ export default function WomenPage() {
       {/* Filters and Sort */}
       <div className="flex flex-col md:flex-row justify-between mb-8">
         <div className="mb-4 md:mb-0">
-          <button className="flex items-center gap-2 text-sm font-medium" onClick={() => setFiltersOpen(!filtersOpen)}>
+          <button
+            className="flex items-center gap-2 text-sm font-medium"
+            onClick={() => setFiltersOpen(!filtersOpen)}
+          >
             <Filter size={18} />
             {t["category.filters"] || "Filters"}
             {filtersOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
@@ -168,7 +176,9 @@ export default function WomenPage() {
               className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-6 bg-gray-50 p-4 rounded-lg"
             >
               <div>
-                <h3 className="font-medium mb-3">{t["women.category"] || "Category"}</h3>
+                <h3 className="font-medium mb-3">
+                  {t["women.category"] || "Category"}
+                </h3>
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2">
                     <Checkbox
@@ -184,7 +194,9 @@ export default function WomenPage() {
                       checked={activeFilters.includes("bottoms")}
                       onCheckedChange={() => toggleFilter("bottoms")}
                     />
-                    <Label htmlFor="bottoms">{t["women.bottoms"] || "Bottoms"}</Label>
+                    <Label htmlFor="bottoms">
+                      {t["women.bottoms"] || "Bottoms"}
+                    </Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Checkbox
@@ -192,13 +204,17 @@ export default function WomenPage() {
                       checked={activeFilters.includes("dresses")}
                       onCheckedChange={() => toggleFilter("dresses")}
                     />
-                    <Label htmlFor="dresses">{t["women.dresses"] || "Dresses"}</Label>
+                    <Label htmlFor="dresses">
+                      {t["women.dresses"] || "Dresses"}
+                    </Label>
                   </div>
                 </div>
               </div>
 
               <div>
-                <h3 className="font-medium mb-3">{t["women.size"] || "Size"}</h3>
+                <h3 className="font-medium mb-3">
+                  {t["women.size"] || "Size"}
+                </h3>
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2">
                     <Checkbox
@@ -209,22 +225,36 @@ export default function WomenPage() {
                     <Label htmlFor="xs">XS</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Checkbox id="s" checked={activeFilters.includes("s")} onCheckedChange={() => toggleFilter("s")} />
+                    <Checkbox
+                      id="s"
+                      checked={activeFilters.includes("s")}
+                      onCheckedChange={() => toggleFilter("s")}
+                    />
                     <Label htmlFor="s">S</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Checkbox id="m" checked={activeFilters.includes("m")} onCheckedChange={() => toggleFilter("m")} />
+                    <Checkbox
+                      id="m"
+                      checked={activeFilters.includes("m")}
+                      onCheckedChange={() => toggleFilter("m")}
+                    />
                     <Label htmlFor="m">M</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Checkbox id="l" checked={activeFilters.includes("l")} onCheckedChange={() => toggleFilter("l")} />
+                    <Checkbox
+                      id="l"
+                      checked={activeFilters.includes("l")}
+                      onCheckedChange={() => toggleFilter("l")}
+                    />
                     <Label htmlFor="l">L</Label>
                   </div>
                 </div>
               </div>
 
               <div>
-                <h3 className="font-medium mb-3">{t["women.color"] || "Color"}</h3>
+                <h3 className="font-medium mb-3">
+                  {t["women.color"] || "Color"}
+                </h3>
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2">
                     <Checkbox
@@ -254,7 +284,9 @@ export default function WomenPage() {
               </div>
 
               <div>
-                <h3 className="font-medium mb-3">{t["women.price"] || "Price"}</h3>
+                <h3 className="font-medium mb-3">
+                  {t["women.price"] || "Price"}
+                </h3>
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2">
                     <Checkbox
@@ -262,7 +294,9 @@ export default function WomenPage() {
                       checked={activeFilters.includes("under50")}
                       onCheckedChange={() => toggleFilter("under50")}
                     />
-                    <Label htmlFor="under50">{t["women.under50"] || "Under $50"}</Label>
+                    <Label htmlFor="under50">
+                      {t["women.under50"] || "Under $50"}
+                    </Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Checkbox
@@ -270,7 +304,9 @@ export default function WomenPage() {
                       checked={activeFilters.includes("50to100")}
                       onCheckedChange={() => toggleFilter("50to100")}
                     />
-                    <Label htmlFor="50to100">{t["women.50to100"] || "$50 - $100"}</Label>
+                    <Label htmlFor="50to100">
+                      {t["women.50to100"] || "$50 - $100"}
+                    </Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Checkbox
@@ -278,7 +314,9 @@ export default function WomenPage() {
                       checked={activeFilters.includes("over100")}
                       onCheckedChange={() => toggleFilter("over100")}
                     />
-                    <Label htmlFor="over100">{t["women.over100"] || "Over $100"}</Label>
+                    <Label htmlFor="over100">
+                      {t["women.over100"] || "Over $100"}
+                    </Label>
                   </div>
                 </div>
               </div>
@@ -287,15 +325,18 @@ export default function WomenPage() {
         </div>
 
         <div className="relative">
-          <button className="flex items-center gap-2 text-sm font-medium" onClick={() => setSortOpen(!sortOpen)}>
+          <button
+            className="flex items-center gap-2 text-sm font-medium"
+            onClick={() => setSortOpen(!sortOpen)}
+          >
             {t["category.sortBy"] || "Sort by:"}{" "}
             {sortOption === "featured"
               ? t["category.featured"] || "Featured"
               : sortOption === "price-low"
-                ? t["category.priceLowToHigh"] || "Price: Low to High"
-                : sortOption === "price-high"
-                  ? t["category.priceHighToLow"] || "Price: High to Low"
-                  : t["category.rating"] || "Rating"}
+              ? t["category.priceLowToHigh"] || "Price: Low to High"
+              : sortOption === "price-high"
+              ? t["category.priceHighToLow"] || "Price: High to Low"
+              : t["category.rating"] || "Rating"}
             {sortOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
           </button>
 
@@ -308,37 +349,45 @@ export default function WomenPage() {
             >
               <div className="py-1">
                 <button
-                  className={`block px-4 py-2 text-sm w-full text-left ${sortOption === "featured" ? "bg-gray-100" : ""}`}
+                  className={`block px-4 py-2 text-sm w-full text-left ${
+                    sortOption === "featured" ? "bg-gray-100" : ""
+                  }`}
                   onClick={() => {
-                    setSortOption("featured")
-                    setSortOpen(false)
+                    setSortOption("featured");
+                    setSortOpen(false);
                   }}
                 >
                   {t["category.featured"] || "Featured"}
                 </button>
                 <button
-                  className={`block px-4 py-2 text-sm w-full text-left ${sortOption === "price-low" ? "bg-gray-100" : ""}`}
+                  className={`block px-4 py-2 text-sm w-full text-left ${
+                    sortOption === "price-low" ? "bg-gray-100" : ""
+                  }`}
                   onClick={() => {
-                    setSortOption("price-low")
-                    setSortOpen(false)
+                    setSortOption("price-low");
+                    setSortOpen(false);
                   }}
                 >
                   {t["category.priceLowToHigh"] || "Price: Low to High"}
                 </button>
                 <button
-                  className={`block px-4 py-2 text-sm w-full text-left ${sortOption === "price-high" ? "bg-gray-100" : ""}`}
+                  className={`block px-4 py-2 text-sm w-full text-left ${
+                    sortOption === "price-high" ? "bg-gray-100" : ""
+                  }`}
                   onClick={() => {
-                    setSortOption("price-high")
-                    setSortOpen(false)
+                    setSortOption("price-high");
+                    setSortOpen(false);
                   }}
                 >
                   {t["category.priceHighToLow"] || "Price: High to Low"}
                 </button>
                 <button
-                  className={`block px-4 py-2 text-sm w-full text-left ${sortOption === "rating" ? "bg-gray-100" : ""}`}
+                  className={`block px-4 py-2 text-sm w-full text-left ${
+                    sortOption === "rating" ? "bg-gray-100" : ""
+                  }`}
                   onClick={() => {
-                    setSortOption("rating")
-                    setSortOpen(false)
+                    setSortOption("rating");
+                    setSortOpen(false);
                   }}
                 >
                   {t["category.rating"] || "Rating"}
@@ -353,14 +402,23 @@ export default function WomenPage() {
       {activeFilters.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-6">
           {activeFilters.map((filter) => (
-            <div key={filter} className="flex items-center bg-gray-100 rounded-full px-3 py-1 text-sm">
+            <div
+              key={filter}
+              className="flex items-center bg-gray-100 rounded-full px-3 py-1 text-sm"
+            >
               <span>{filter}</span>
-              <button onClick={() => toggleFilter(filter)} className="ml-2 text-gray-500 hover:text-gray-700">
+              <button
+                onClick={() => toggleFilter(filter)}
+                className="ml-2 text-gray-500 hover:text-gray-700"
+              >
                 <X className="h-3 w-3" />
               </button>
             </div>
           ))}
-          <button onClick={() => setActiveFilters([])} className="text-sm text-gray-500 hover:text-gray-700 ml-2">
+          <button
+            onClick={() => setActiveFilters([])}
+            className="text-sm text-gray-500 hover:text-gray-700 ml-2"
+          >
             {t["category.clearFilters"] || "Clear all"}
           </button>
         </div>
@@ -405,7 +463,9 @@ export default function WomenPage() {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+              onClick={() =>
+                setCurrentPage(Math.min(totalPages, currentPage + 1))
+              }
               disabled={currentPage === totalPages}
             >
               {t["category.next"] || "Next"}
@@ -414,7 +474,7 @@ export default function WomenPage() {
         </div>
       )}
     </div>
-  )
+  );
 }
 
 function X(props: React.ComponentProps<typeof import("lucide-react").X>) {
@@ -434,5 +494,5 @@ function X(props: React.ComponentProps<typeof import("lucide-react").X>) {
       <path d="M18 6 6 18" />
       <path d="m6 6 12 12" />
     </svg>
-  )
+  );
 }

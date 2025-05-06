@@ -105,7 +105,7 @@ const products: Product[] = [
     ],
   },
   {
-    id: 2,
+    id: "perfume-1",
     name: "Relaxed Linen Dress",
     price: 79.99,
     category: "women",
@@ -1707,7 +1707,6 @@ export default function ProductPage({
     forceUpdate({});
   }, [language]);
 
-
   const incrementQuantity = () => setQuantity((prev) => prev + 1);
   const decrementQuantity = () =>
     setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
@@ -2001,7 +2000,8 @@ export default function ProductPage({
                   </div>
                 </div>
 
-                <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                <div className="mt-8 space-y-4">
+                  {/* Add to Cart – tepadan alohida, to‘liq eni */}
                   <Button
                     onClick={handleAddToCart}
                     className="w-full bg-black text-white hover:bg-gray-800"
@@ -2009,30 +2009,34 @@ export default function ProductPage({
                     <ShoppingBag className="mr-2 h-5 w-5" />
                     {t["product.addToCart"] || "Add to Cart"}
                   </Button>
-                  <Button
-                    onClick={handleCheckout}
-                    className="w-full bg-primary text-white hover:bg-primary-dark"
-                  >
-                    {t["product.buyNow"] || "Buy Now"}
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={handleWishlistToggle}
-                    className="flex items-center justify-center gap-2"
-                  >
-                    {isInWishlist(product.id.toString()) ? (
-                      <>
-                        <Heart className="h-5 w-5 fill-current" />{" "}
-                        {t["product.removeFromWishlist"] ||
-                          "Remove from Wishlist"}
-                      </>
-                    ) : (
-                      <>
-                        <Heart className="h-5 w-5" />{" "}
-                        {t["product.addToWishlist"] || "Add to Wishlist"}
-                      </>
-                    )}
-                  </Button>
+
+                  {/* Buy Now + Wishlist – yonma-yon pastda, har biri 50% eni */}
+                  <div className="flex gap-4">
+                    <Button
+                      onClick={handleCheckout}
+                      className="w-1/2 bg-primary text-white hover:bg-primary-dark"
+                    >
+                      {t["product.buyNow"] || "Buy Now"}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={handleWishlistToggle}
+                      className="w-1/2 flex items-center justify-center gap-2"
+                    >
+                      {isInWishlist(product.id.toString()) ? (
+                        <>
+                          <Heart className="h-5 w-5 fill-current" />
+                          {t["product.removeFromWishlist"] ||
+                            "Remove from Wishlist"}
+                        </>
+                      ) : (
+                        <>
+                          <Heart className="h-5 w-5" />
+                          {t["product.addToWishlist"] || "Add to Wishlist"}
+                        </>
+                      )}
+                    </Button>
+                  </div>
                 </div>
 
                 <div className="mt-8 flex items-center space-x-4 text-sm text-gray-500">
