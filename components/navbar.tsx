@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import {
   Search,
@@ -21,6 +22,8 @@ import CartMenu from "@/components/cart-menu";
 import { useLanguage, type Language } from "@/context/language-context";
 
 export function Navbar() {
+  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -33,21 +36,24 @@ export function Navbar() {
   const { itemCount: wishlistCount } = useWishlist();
   const { language, setLanguage, t } = useLanguage();
 
-  // Force re-render when language changes
-  const [, forceUpdate] = useState({});
-  useEffect(() => {
-    forceUpdate({});
-  }, [language]);
-
   const languages = [
     { code: "UZB", name: "O'zbek" },
     { code: "ENG", name: "English" },
     { code: "RUS", name: "Русский" },
   ];
 
-  // Handle language change
+  // Search funksiyasi
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchOpen(false);
+      setSearchQuery("");
+      setMobileMenuOpen(false);
+    }
+  };
+
   const handleLanguageChange = (newLanguage: Language) => {
-    console.log("Changing language to:", newLanguage);
     setLanguage(newLanguage);
     setLanguageOpen(false);
     if (typeof window !== "undefined") {
@@ -59,7 +65,6 @@ export function Navbar() {
     }
   };
 
-  // Handle scroll event with animation
   useEffect(() => {
     const handleScroll = () => {
       const isScrolledNow = window.scrollY > 50;
@@ -71,7 +76,6 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [controls]);
 
-  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
@@ -89,7 +93,6 @@ export function Navbar() {
     };
   }, [cartOpen, languageOpen]);
 
-  // Animation variants
   const headerVariants = {
     default: {
       paddingTop: "1rem",
@@ -144,7 +147,6 @@ export function Navbar() {
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
-          {/* Logo with animation */}
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -155,17 +157,13 @@ export function Navbar() {
             </Link>
           </motion.div>
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {[
               { href: "/", label: t.home || "Home" },
               { href: "/category/men", label: t.men || "Men" },
               { href: "/category/women", label: t.women || "Women" },
               { href: "/category/shoes", label: t.shoes || "Shoes" },
-              {
-                href: "/category/perfumery",
-                label: t.perfumery || "Perfumery",
-              },
+              { href: "/category/perfumery", label: t.perfumery || "Perfumery" },
             ].map((item, i) => (
               <motion.div
                 key={item.href}
@@ -186,9 +184,7 @@ export function Navbar() {
             ))}
           </nav>
 
-          {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            {/* Language Selector */}
             <div className="relative" data-language-container>
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -300,7 +296,6 @@ export function Navbar() {
             </div>
           </div>
 
-          {/* Mobile Menu Button */}
           <div className="flex items-center space-x-4 md:hidden">
             <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
               <Link
@@ -366,7 +361,6 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* Animated Search Bar */}
         <AnimatePresence>
           {searchOpen && (
             <motion.div
@@ -380,29 +374,34 @@ export function Navbar() {
               transition={{ duration: 0.3, ease: "easeInOut" }}
               className="overflow-hidden"
             >
-              <div className="relative">
+              <form onSubmit={handleSearch} className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <Input
                   type="search"
-                  placeholder={t.searchPlaceholder || "Search..."}
+                  placeholder={t.searchPlaceholder || "Qidirish..."}
                   className="pl-10 pr-10 py-2 w-full"
                   autoFocus
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 <motion.button
+                  type="button"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  onClick={() => setSearchOpen(false)}
+                  onClick={() => {
+                    setSearchOpen(false);
+                    setSearchQuery("");
+                  }}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                 >
                   <X className="h-5 w-5" />
                 </motion.button>
-              </div>
+              </form>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      {/* Animated Mobile Menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -416,7 +415,8 @@ export function Navbar() {
             className="md:hidden bg-white border-t overflow-hidden"
           >
             <div className="container mx-auto px-4 py-4">
-              <motion.div
+              <motion.form
+                onSubmit={handleSearch}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
@@ -425,15 +425,16 @@ export function Navbar() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <Input
                   type="search"
-                  placeholder={t.searchPlaceholder || "Search..."}
+                  placeholder={t.searchPlaceholder || "Qidirish..."}
                   className="pl-10 w-full"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
-              </motion.div>
+              </motion.form>
 
-              {/* Mobile Language Selector */}
               <div className="mb-6">
                 <h3 className="text-sm font-medium text-gray-500 mb-2">
-                  {t.language || "Language"}
+                  {t.language || "Til"}
                 </h3>
                 <div className="flex space-x-2">
                   {languages.map((lang) => (
@@ -456,13 +457,13 @@ export function Navbar() {
 
               <nav className="flex flex-col space-y-4">
                 {[
-                  { href: "/", label: t.home || "Home" },
-                  { href: "/category/men", label: t.men || "Men" },
-                  { href: "/category/women", label: t.women || "Women" },
-                  { href: "/category/shoes", label: t.shoes || "Shoes" },
+                  { href: "/", label: t.home || "Bosh sahifa" },
+                  { href: "/category/men", label: t.men || "Erkaklar" },
+                  { href: "/category/women", label: t.women || "Ayollar" },
+                  { href: "/category/shoes", label: t.shoes || "Oyoq kiyim" },
                   {
                     href: "/category/perfumery",
-                    label: t.perfumery || "Perfumery",
+                    label: t.perfumery || "Atirlar",
                   },
                 ].map((item, i) => (
                   <motion.div
@@ -495,8 +496,8 @@ export function Navbar() {
                   >
                     <User className="h-5 w-5 mr-2" />
                     {user
-                      ? t.myAccount || "My Account"
-                      : t.signInRegister || "Sign In / Register"}
+                      ? t.myAccount || "Mening hisobim"
+                      : t.signInRegister || "Kirish / Ro'yxatdan o'tish"}
                   </Link>
                 </motion.div>
 
@@ -527,7 +528,7 @@ export function Navbar() {
                           d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                         />
                       </svg>
-                      {t.signOut || "Sign Out"}
+                      {t.signOut || "Chiqish"}
                     </button>
                   </motion.div>
                 )}
@@ -543,7 +544,7 @@ export function Navbar() {
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     <Heart className="h-5 w-5 mr-2" />
-                    {t.wishlist || "Wishlist"}
+                    {t.wishlist || "Sevimlilar"}
                   </Link>
                 </motion.div>
 
@@ -571,7 +572,7 @@ export function Navbar() {
                         d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
                       />
                     </svg>
-                    {t.customerService || "Customer Service"}
+                    {t.customerService || "Mijozlarga xizmat"}
                   </Link>
                 </motion.div>
               </div>

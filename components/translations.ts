@@ -325,7 +325,7 @@ export const translations = {
     expiryFormat: "Iltimos, to'g'ri formatda kiriting (OO/YY)",
     invalidMonth: "Noto'g'ri oy raqami",
     expiredCard: "Kartaning amal qilish muddati tugagan",
-    otherCountries: "Iltimos, boshqa mamlakatlar uchun admin bilan bog'laning"
+    otherCountries: "Iltimos, boshqa mamlakatlar uchun admin bilan bog'laning",
   },
 
   ENG: {

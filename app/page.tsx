@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import ProductCard from "@/components/product-card";
 import HeroSlider from "@/components/heroSlider";
 import { useLanguage } from "@/context/language-context";
+import AnimatedText from "@/components/animatedtext";
 
 export default function HomePage() {
   const [activeCategory, setActiveCategory] = useState("all");
@@ -56,7 +57,7 @@ export default function HomePage() {
       rating: 4.5,
     },
     {
-      id: 2,
+      id: "perfume-1",
       name: t.product1Name || "Aventus Creed",
       price: 99.99,
       category: "perfumery",
@@ -129,6 +130,8 @@ export default function HomePage() {
         {/* Hero Section with Sliding Background */}
         <HeroSlider slides={heroSlides} />
 
+        {/* Animated Text */}
+        <AnimatedText />
         {/* Featured Products Section */}
         <section className="py-16 px-4 bg-gray-50">
           <div className="container mx-auto">

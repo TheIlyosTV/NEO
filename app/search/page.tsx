@@ -1,54 +1,26 @@
 "use client";
 
-import React from "react";
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import { Star, Heart, ChevronRight, ShoppingBag } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Product } from "@/app/product/[id]/page";
 import ProductCard from "@/components/product-card";
-import { useCart } from "@/context/cart-context";
-import { useWishlist } from "@/context/wishlist-context";
-import { useToast } from "@/hooks/use-toast";
-import { useLanguage } from "@/context/language-context"; // Import the language context
+import { useLanguage } from "@/context/language-context";
+import Link from "next/link";
 
-// First, let's modify the Product interface to handle string IDs
-export interface Product {
-  id: string | number;
-  name: string;
-  price: number;
-  category: string;
-  image: string;
-  rating: number;
-  reviewCount: number;
-  description: string;
-  details: string[];
-  colors: { name: string; value: string }[];
-  sizes: string[];
-  images: string[];
-  reviews: {
-    id: number;
-    author: string;
-    rating: number;
-    date: string;
-    content: string;
-  }[];
-}
+export default function SearchPage() {
+  const searchParams = useSearchParams();
+  const query = searchParams.get("q");
+  const [results, setResults] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { t } = useLanguage();
 
-// Now update the products array to include the perfumery products
-const products: Product[] = [
-  // Mens
-  {
+  useEffect(() => {
+    if (query) {
+      setLoading(true);
+      // API chaqirish o'rniga mahalliy qidiruv
+      const allProducts = [
+ // Mens
+ {
     id: 1,
     name: "Slim Fit Cotton Shirt",
     price: 49.99,
@@ -2908,645 +2880,48 @@ const products: Product[] = [
       }
     ]
   }
-];
+      ];
 
-// Update the ProductPage component to handle string IDs
-export default function ProductPage({
-  params: paramsPromise,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const params = React.use(paramsPromise);
-  const productId = params.id;
-
-  // Find product by ID (handling both string and number IDs)
-  const product =
-    products.find((p) => p.id.toString() === productId.toString()) ||
-    products[0];
-
-  const [selectedSize, setSelectedSize] = useState("");
-  const [selectedColor, setSelectedColor] = useState(
-    product.colors[0]?.value || ""
-  );
-  const [quantity, setQuantity] = useState(1);
-  const [mainImage, setMainImage] = useState(0);
-
-  const { addItem } = useCart();
-  const {
-    addItem: addToWishlist,
-    isInWishlist,
-    removeItem: removeFromWishlist,
-  } = useWishlist();
-  const { toast } = useToast();
-  const { t, language } = useLanguage(); // Use the language context
-
-  // Force re-render when language changes
-  const [, forceUpdate] = useState({});
-  useEffect(() => {
-    console.log("ProductPage: Language changed to", language);
-    forceUpdate({});
-  }, [language]);
-
-  const incrementQuantity = () => setQuantity((prev) => prev + 1);
-  const decrementQuantity = () =>
-    setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
-
-  const handleAddToCart = () => {
-    if (!selectedSize) {
-      toast({
-        title: t["product.pleaseSelectSize"] || "Please select a size",
-        description:
-          t["product.selectSizeMessage"] ||
-          "You must select a size before adding to cart",
-        variant: "destructive",
+      const searchResults = allProducts.filter(product => {
+        const searchTerm = query.toLowerCase();
+        return (
+          product.name.toLowerCase().includes(searchTerm) ||
+          product.description?.toLowerCase().includes(searchTerm) ||
+          product.category.toLowerCase().includes(searchTerm)
+        );
       });
-      return;
+
+      setResults(searchResults);
+      setLoading(false);
     }
-
-    addItem(
-      {
-        id: product.id.toString(),
-        name: product.name,
-        price: product.price,
-        image: product.images[0],
-        size: selectedSize,
-        color: selectedColor,
-      },
-      quantity
-    );
-
-    toast({
-      title: t["product.addedToCart"] || "Added to cart",
-      description: `${product.name} (${selectedSize}) ${
-        t["product.hasBeenAddedToCart"] || "has been added to your cart"
-      }`,
-    });
-  };
-  const handleCheckout = () => {
-    if (!selectedSize) {
-      toast({
-        title: t["product.pleaseSelectSize"] || "Please select a size",
-        description:
-          t["product.selectSizeMessage"] ||
-          "You must select a size before checkout",
-        variant: "destructive",
-      });
-      return;
-    }
-  };
-  const handleWishlistToggle = () => {
-    if (isInWishlist(product.id.toString())) {
-      removeFromWishlist(product.id.toString());
-      toast({
-        title: t["product.removedFromWishlist"] || "Removed from wishlist",
-        description: `${product.name} ${
-          t["product.hasBeenRemovedFromWishlist"] ||
-          "has been removed from your wishlist"
-        }`,
-      });
-    } else {
-      addToWishlist({
-        id: product.id.toString(),
-        name: product.name,
-        price: product.price,
-        image: product.images[0],
-        category: product.category,
-      });
-      toast({
-        title: t["product.addedToWishlist"] || "Added to wishlist",
-        description: `${product.name} ${
-          t["product.hasBeenAddedToWishlist"] ||
-          "has been added to your wishlist"
-        }`,
-      });
-    }
-  };
-
-  const relatedProducts = products
-    .filter((p) => p.category === product.category && p.id !== product.id)
-    .slice(0, 4);
+  }, [query]);
 
   return (
-    <div className="min-h-screen bg-white">
-      <main className="">
-        {/* Breadcrumb */}
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center text-sm text-gray-500">
-            <Link href="/" className="hover:text-gray-700">
-              {t["product.home"] || "Home"}
-            </Link>
-            <ChevronRight className="h-4 w-4 mx-2" />
-            <Link
-              href={`/category/${product.category}`}
-              className="hover:text-gray-700"
-            >
-              {t[product.category] ||
-                product.category.charAt(0).toUpperCase() +
-                  product.category.slice(1)}
-            </Link>
-            <ChevronRight className="h-4 w-4 mx-2" />
-            <span className="text-gray-900">{product.name}</span>
-          </div>
+    <div className="container mx-auto px-4 py-8 min-h-screen">
+      <h1 className="text-2xl font-bold mb-6">
+        {t.searchResultsFor || "Qidiruv natijalari"}: &quot;{query}&quot;
+      </h1>
+      
+      {loading ? (
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
         </div>
-
-        {/* Product Details */}
-        <section className="container mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Product Images */}
-            <div className="space-y-4">
-              <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={mainImage}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="h-full w-full"
-                  >
-                    <Image
-                      src={product.images[mainImage] || "/placeholder.svg"}
-                      alt={product.name}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-
-              <div className="grid grid-cols-4 gap-4">
-                {product.images.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setMainImage(index)}
-                    className={`relative aspect-square overflow-hidden rounded-md ${
-                      mainImage === index
-                        ? "ring-2 ring-gray-900"
-                        : "ring-1 ring-gray-200"
-                    }`}
-                  >
-                    <Image
-                      src={image || "/placeholder.svg"}
-                      alt={`Product view ${index + 1}`}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 25vw, (max-width: 1200px) 20vw, 15vw"
-                    />
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Product Info */}
-            <div className="flex flex-col">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <h1 className="text-3xl font-bold text-gray-900">
-                  {product.name}
-                </h1>
-
-                <div className="mt-2 flex items-center">
-                  <div className="flex items-center">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`h-5 w-5 ${
-                          i < Math.floor(product.rating)
-                            ? "text-yellow-400 fill-yellow-400"
-                            : i < product.rating
-                            ? "text-yellow-400 fill-yellow-400 opacity-50"
-                            : "text-gray-300"
-                        }`}
-                      />
-                    ))}
-                  </div>
-                  <span className="ml-2 text-sm text-gray-500">
-                    {product.rating} ({product.reviewCount}{" "}
-                    {t["product.reviews"] || "reviews"})
-                  </span>
-                </div>
-
-                <p className="mt-6 text-2xl font-semibold text-gray-900">
-                  ${product.price.toFixed(2)}
-                </p>
-
-                <div className="mt-8">
-                  <h2 className="text-sm font-medium text-gray-900">
-                    {t["product.color"] || "Color"}
-                  </h2>
-                  <div className="mt-2 flex space-x-2">
-                    {product.colors.map((color) => (
-                      <button
-                        key={color.value}
-                        onClick={() => setSelectedColor(color.value)}
-                        className={`relative h-8 w-8 rounded-full ${
-                          selectedColor === color.value
-                            ? "ring-2 ring-gray-900 ring-offset-2"
-                            : ""
-                        }`}
-                        style={{ backgroundColor: color.value }}
-                        aria-label={`Color: ${color.name}`}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                <div className="mt-8">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-sm font-medium text-gray-900">
-                      {t["product.size"] || "Size"}
-                    </h2>
-                    <Link
-                      href="/size-guide"
-                      className="text-sm font-medium text-gray-600 hover:text-gray-900"
-                    >
-                      {t["product.sizeGuide"] || "Size Guide"}
-                    </Link>
-                  </div>
-
-                  <RadioGroup
-                    value={selectedSize}
-                    onValueChange={setSelectedSize}
-                    className="mt-2 grid grid-cols-6 gap-2"
-                  >
-                    {product.sizes.map((size) => (
-                      <div key={size} className="flex items-center">
-                        <RadioGroupItem
-                          value={size}
-                          id={`size-${size}`}
-                          className="peer sr-only"
-                        />
-                        <Label
-                          htmlFor={`size-${size}`}
-                          className="flex h-10 w-full cursor-pointer items-center justify-center rounded-md border border-gray-200 bg-white text-sm font-medium text-gray-900 peer-data-[state=checked]:border-gray-900 peer-data-[state=checked]:bg-gray-900 peer-data-[state=checked]:text-white hover:bg-gray-50 peer-data-[state=checked]:hover:bg-gray-800"
-                        >
-                          {size}
-                        </Label>
-                      </div>
-                    ))}
-                  </RadioGroup>
-                </div>
-
-                <div className="mt-8">
-                  <h2 className="text-sm font-medium text-gray-900">
-                    {t["product.quantity"] || "Quantity"}
-                  </h2>
-                  <div className="mt-2 flex items-center space-x-3">
-                    <button
-                      onClick={decrementQuantity}
-                      className="rounded-md border border-gray-300 p-2 text-gray-600 hover:bg-gray-50"
-                    >
-                      <span className="sr-only">Decrease quantity</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="h-4 w-4"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M18 12H6"
-                        />
-                      </svg>
-                    </button>
-                    <span className="w-8 text-center">{quantity}</span>
-                    <button
-                      onClick={incrementQuantity}
-                      className="rounded-md border border-gray-300 p-2 text-gray-600 hover:bg-gray-50"
-                    >
-                      <span className="sr-only">Increase quantity</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="h-4 w-4"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 6v12m6-6H6"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-
-                <div className="mt-8 space-y-4">
-                  {/* Add to Cart – tepadan alohida, to‘liq eni */}
-                  <Button
-                    onClick={handleAddToCart}
-                    className="w-full bg-black text-white hover:bg-gray-800"
-                  >
-                    <ShoppingBag className="mr-2 h-5 w-5" />
-                    {t["product.addToCart"] || "Add to Cart"}
-                  </Button>
-
-                  {/* Buy Now + Wishlist – yonma-yon pastda, har biri 50% eni */}
-                  <div className="flex gap-4">
-                    <Button
-                      onClick={handleCheckout}
-                      className="w-1/2 bg-primary text-white hover:bg-primary-dark"
-                    >
-                      {t["product.buyNow"] || "Buy Now"}
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={handleWishlistToggle}
-                      className="w-1/2 flex items-center justify-center gap-2"
-                    >
-                      {isInWishlist(product.id.toString()) ? (
-                        <>
-                          <Heart className="h-5 w-5 fill-current" />
-                          {t["product.removeFromWishlist"] ||
-                            "Remove from Wishlist"}
-                        </>
-                      ) : (
-                        <>
-                          <Heart className="h-5 w-5" />
-                          {t["product.addToWishlist"] || "Add to Wishlist"}
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                </div>
-
-                <div className="mt-8 flex items-center space-x-4 text-sm text-gray-500">
-                  <div className="flex items-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="mr-2 h-5 w-5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"
-                      />
-                    </svg>
-                    {t["product.freeShipping"] || "Free shipping over $100"}
-                  </div>
-                  <div className="flex items-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="mr-2 h-5 w-5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
-                      />
-                    </svg>
-                    {t["product.freeReturns"] || "Free 30-day returns"}
-                  </div>
-                </div>
-
-                <Separator className="my-8" />
-
-                {/* Product Details Accordion */}
-                <Accordion type="single" collapsible className="w-full">
-                  <AccordionItem value="description">
-                    <AccordionTrigger className="text-sm font-medium text-gray-900">
-                      {t["product.description"] || "Description"}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-sm text-gray-600">
-                      {product.description}
-                    </AccordionContent>
-                  </AccordionItem>
-
-                  <AccordionItem value="details">
-                    <AccordionTrigger className="text-sm font-medium text-gray-900">
-                      {t["product.details"] || "Details"}
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <ul className="list-disc pl-5 text-sm text-gray-600 space-y-1">
-                        {product.details.map((detail, index) => (
-                          <li key={index}>{detail}</li>
-                        ))}
-                      </ul>
-                    </AccordionContent>
-                  </AccordionItem>
-
-                  <AccordionItem value="shipping">
-                    <AccordionTrigger className="text-sm font-medium text-gray-900">
-                      {t["product.shippingReturns"] || "Shipping & Returns"}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-sm text-gray-600">
-                      <p className="mb-2">
-                        {t["product.shippingInfo1"] ||
-                          "Free standard shipping on orders over $100."}
-                      </p>
-                      <p className="mb-2">
-                        {t["product.shippingInfo2"] ||
-                          "Express shipping available at checkout."}
-                      </p>
-                      <p>
-                        {t["product.returnsInfo"] ||
-                          "Returns accepted within 30 days of delivery. Items must be unworn with original tags attached."}
-                      </p>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* Reviews Section */}
-        <section className="container mx-auto px-4 py-8 border-t">
-          <h2 className="text-2xl font-bold mb-6">
-            {t["product.customerReviews"] || "Customer Reviews"}
-          </h2>
-
-          <div className="flex flex-col md:flex-row gap-8">
-            <div className="md:w-1/3">
-              <div className="bg-gray-50 p-6 rounded-lg">
-                <div className="flex items-center mb-4">
-                  <div className="flex">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`h-6 w-6 ${
-                          i < Math.floor(product.rating)
-                            ? "text-yellow-400 fill-yellow-400"
-                            : i < product.rating
-                            ? "text-yellow-400 fill-yellow-400 opacity-50"
-                            : "text-gray-300"
-                        }`}
-                      />
-                    ))}
-                  </div>
-                  <span className="ml-2 text-lg font-medium">
-                    {product.rating} {t["product.outOf5"] || "out of 5"}
-                  </span>
-                </div>
-                <p className="text-gray-600">
-                  {product.reviewCount}{" "}
-                  {t["product.customerRatings"] || "customer ratings"}
-                </p>
-
-                <div className="mt-6">
-                  <div className="flex items-center mb-2">
-                    <span className="w-12 text-sm text-gray-600">
-                      5 {t["product.star"] || "star"}
-                    </span>
-                    <div className="flex-1 h-2 mx-2 bg-gray-200 rounded-full">
-                      <div
-                        className="h-2 bg-yellow-400 rounded-full"
-                        style={{ width: "70%" }}
-                      ></div>
-                    </div>
-                    <span className="w-12 text-sm text-gray-600">70%</span>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <span className="w-12 text-sm text-gray-600">
-                      4 {t["product.star"] || "star"}
-                    </span>
-                    <div className="flex-1 h-2 mx-2 bg-gray-200 rounded-full">
-                      <div
-                        className="h-2 bg-yellow-400 rounded-full"
-                        style={{ width: "20%" }}
-                      ></div>
-                    </div>
-                    <span className="w-12 text-sm text-gray-600">20%</span>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <span className="w-12 text-sm text-gray-600">
-                      3 {t["product.star"] || "star"}
-                    </span>
-                    <div className="flex-1 h-2 mx-2 bg-gray-200 rounded-full">
-                      <div
-                        className="h-2 bg-yellow-400 rounded-full"
-                        style={{ width: "5%" }}
-                      ></div>
-                    </div>
-                    <span className="w-12 text-sm text-gray-600">5%</span>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <span className="w-12 text-sm text-gray-600">
-                      2 {t["product.star"] || "star"}
-                    </span>
-                    <div className="flex-1 h-2 mx-2 bg-gray-200 rounded-full">
-                      <div
-                        className="h-2 bg-yellow-400 rounded-full"
-                        style={{ width: "3%" }}
-                      ></div>
-                    </div>
-                    <span className="w-12 text-sm text-gray-600">3%</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="w-12 text-sm text-gray-600">
-                      1 {t["product.star"] || "star"}
-                    </span>
-                    <div className="flex-1 h-2 mx-2 bg-gray-200 rounded-full">
-                      <div
-                        className="h-2 bg-yellow-400 rounded-full"
-                        style={{ width: "2%" }}
-                      ></div>
-                    </div>
-                    <span className="w-12 text-sm text-gray-600">2%</span>
-                  </div>
-                </div>
-
-                <Button className="w-full mt-6 bg-gray-900 hover:bg-gray-800 text-white">
-                  {t["product.writeReview"] || "Write a Review"}
-                </Button>
-              </div>
-            </div>
-
-            <div className="md:w-2/3">
-              <div className="space-y-6">
-                {product.reviews.map((review) => (
-                  <motion.div
-                    key={review.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    viewport={{ once: true }}
-                    className="border-b pb-6"
-                  >
-                    <div className="flex justify-between mb-2">
-                      <h3 className="font-medium">{review.author}</h3>
-                      <span className="text-gray-500 text-sm">
-                        {review.date}
-                      </span>
-                    </div>
-                    <div className="flex mb-2">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`h-4 w-4 ${
-                            i < review.rating
-                              ? "text-yellow-400 fill-yellow-400"
-                              : "text-gray-300"
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    <p className="text-gray-600">{review.content}</p>
-                  </motion.div>
-                ))}
-              </div>
-
-              {product.reviews.length > 3 && (
-                <div className="mt-6 text-center">
-                  <Button variant="outline">
-                    {t["product.loadMore"] || "Load More Reviews"}
-                  </Button>
-                </div>
-              )}
-            </div>
-          </div>
-        </section>
-
-        {/* Related Products Section */}
-        <section className="container mx-auto px-4 py-12 border-t">
-          <h2 className="text-2xl font-bold mb-8">
-            {t["product.relatedProducts"] || "Related Products"}
-          </h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {relatedProducts.map((relatedProduct) => (
-              <motion.div
-                key={relatedProduct.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.5,
-                  delay: relatedProducts.indexOf(relatedProduct) * 0.1,
-                }}
-                viewport={{ once: true }}
-              >
-                <ProductCard
-                  product={{
-                    id: relatedProduct.id,
-                    name: relatedProduct.name,
-                    price: relatedProduct.price,
-                    image: relatedProduct.image,
-                    category: relatedProduct.category,
-                    rating: relatedProduct.rating,
-                  }}
-                />
-              </motion.div>
-            ))}
-          </div>
-        </section>
-      </main>
+      ) : results.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {results.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-12">
+          <p className="text-lg text-gray-600">
+            {t.noResultsFound || "Hech qanday natija topilmadi"}
+          </p>
+          <Link href="/" className="text-blue-600 hover:underline mt-4 inline-block">
+            {t.backToHome || "Bosh sahifaga qaytish"}
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

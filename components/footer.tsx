@@ -13,7 +13,7 @@ export function Footer() {
       <div className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-lg font-bold mb-4">LUXMODE</h3>
+            <h3 className="text-lg font-bold mb-4">NEO</h3>
             <p className="text-gray-600 mb-4">
               {t["footer.about"] ||
                 "Premium clothing and footwear for the modern individual."}
