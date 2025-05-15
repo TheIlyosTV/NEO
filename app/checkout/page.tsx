@@ -541,7 +541,7 @@ export default function CheckoutPage() {
                             <p className="text-sm text-yellow-700">
                               You have selected a different country.
                               <Link
-                                href="/contact-admin"
+                                href="/customer-service"
                                 className="font-medium text-yellow-700 underline"
                               >
                                 Please contact admin

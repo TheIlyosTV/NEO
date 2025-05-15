@@ -20,8 +20,8 @@ interface User {
   name?: string;
 }
 
-const VALID_ADMIN_EMAIL = "admin@example.com";
-const VALID_ADMIN_PASSWORD = "admin123";
+const VALID_ADMIN_EMAIL = "zabutolib@gmail.com";
+const VALID_ADMIN_PASSWORD = "Mustafo77";
 
 export default function AuthPage() {
   const router = useRouter();
