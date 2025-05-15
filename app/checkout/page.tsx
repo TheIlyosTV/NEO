@@ -49,7 +49,6 @@ export default function CheckoutPage() {
   // Calculate shipping - free over $100
   const shipping = subtotal > 100 ? 0 : 9.99;
 
-
   // Calculate total
   const total = subtotal + shipping;
 
@@ -272,11 +271,11 @@ export default function CheckoutPage() {
         <div className="container mx-auto px-4 py-8">
           <div className="flex items-center text-sm mb-8">
             <Link href="/" className="text-gray-500 hover:text-gray-700">
-              Home
+              {t.home || "Home"}
             </Link>
             <ChevronRight className="h-4 w-4 mx-2 text-gray-400" />
             <Link href="/cart" className="text-gray-500 hover:text-gray-700">
-              Cart
+              {t.cart || "Cart"}
             </Link>
             <ChevronRight className="h-4 w-4 mx-2 text-gray-400" />
             <span className="text-gray-900 font-medium">
@@ -801,7 +800,7 @@ export default function CheckoutPage() {
                         <Check className="h-8 w-8 text-green-600" />
                       </div>
                       <h2 className="text-2xl font-semibold mb-2">
-                        {t.thankYou || "Thank You for Your Order!"}Thank You for
+                        {t.thankYou || "Thank You for Your Order!"}
                       </h2>
                       <p className="text-gray-600 mb-6">
                         {t.orderProcessing ||

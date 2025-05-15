@@ -1,195 +1,273 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import { Eye, EyeOff, Mail, Lock, User, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useToast } from "@/hooks/use-toast";
+import { signIn, useSession } from "next-auth/react";
 
-import { useState, useEffect } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
-import Link from "next/link"
-import { motion, AnimatePresence } from "framer-motion"
-import { Eye, EyeOff, Mail, Lock, User, ChevronRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { useToast } from "@/hooks/use-toast"
-import { useAuth } from "@/context/auth-context"
+interface User {
+  email: string;
+  password: string;
+  name?: string;
+}
+
+const VALID_ADMIN_EMAIL = "admin@example.com";
+const VALID_ADMIN_PASSWORD = "admin123";
 
 export default function AuthPage() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const { toast } = useToast()
-  const { user, login, register, loginWithGoogle, isLoading } = useAuth()
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { toast } = useToast();
+  const { data: session } = useSession();
 
-  const [showPassword, setShowPassword] = useState(false)
-  const [activeTab, setActiveTab] = useState("login")
+  const [showPassword, setShowPassword] = useState(false);
+  const [activeTab, setActiveTab] = useState("login");
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [registerName, setRegisterName] = useState("");
+  const [registerEmail, setRegisterEmail] = useState("");
+  const [registerPassword, setRegisterPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [agreeTerms, setAgreeTerms] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Form states
-  const [loginEmail, setLoginEmail] = useState("")
-  const [loginPassword, setLoginPassword] = useState("")
-  const [registerName, setRegisterName] = useState("")
-  const [registerEmail, setRegisterEmail] = useState("")
-  const [registerPassword, setRegisterPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
-  const [agreeTerms, setAgreeTerms] = useState(false)
-  const [rememberMe, setRememberMe] = useState(false)
-  const [googleLoading, setGoogleLoading] = useState(false)
-
-  // Set active tab based on URL parameter
   useEffect(() => {
-    const tab = searchParams.get("tab")
+    const tab = searchParams.get("tab");
     if (tab === "register") {
-      setActiveTab("register")
+      setActiveTab("register");
     }
-  }, [searchParams])
+  }, [searchParams]);
 
-  // Redirect if already logged in
   useEffect(() => {
-    if (user) {
-      router.push("/account")
+    localStorage.removeItem("loggedInUser");
+  }, []);
+
+  useEffect(() => {
+    if (session && window.location.pathname === "/auth") {
+      const userData = {
+        email: session.user?.email || "",
+        isAdmin: session.user?.email === VALID_ADMIN_EMAIL,
+      };
+      localStorage.setItem("loggedInUser", JSON.stringify(userData));
+      if (userData.isAdmin) {
+        router.push("/admin/dashboard");
+      } else {
+        router.push("/account");
+      }
     }
-  }, [user, router])
+  }, [session, router]);
+
+  useEffect(() => {
+    const userData = localStorage.getItem("loggedInUser");
+    if (userData && window.location.pathname === "/auth" && !session) {
+      const user = JSON.parse(userData);
+      if (user.isAdmin) {
+        router.push("/admin/dashboard");
+      } else {
+        router.push("/account");
+      }
+    }
+  }, [router, session]);
 
   const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword)
-  }
+    setShowPassword(!showPassword);
+  };
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-
-    if (!loginEmail || !loginPassword) {
-      toast({
-        title: "Error",
-        description: "Please fill in all fields",
-        variant: "destructive",
-      })
-      return
+  const handleLogin = async (email: string, password: string) => {
+    const isAdmin =
+      email === VALID_ADMIN_EMAIL && password === VALID_ADMIN_PASSWORD;
+    if (isAdmin) {
+      const userData = {
+        email,
+        isAdmin,
+      };
+      localStorage.setItem("loggedInUser", JSON.stringify(userData));
+      if (isAdmin) {
+        router.push("/admin/dashboard");
+      } else {
+        router.push("/account");
+      }
+      return true;
     }
+    return false;
+  };
 
-    const success = await login(loginEmail, loginPassword)
-
-    if (success) {
+  const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+      const success = await handleLogin(loginEmail, loginPassword);
+      if (!success) {
+        toast({
+          title: "Xato",
+          description: "Email yoki parol xato",
+          variant: "destructive",
+        });
+      }
+    } catch {
       toast({
-        title: "Success",
-        description: "You have been logged in successfully",
-      })
-      router.push("/account")
-    } else {
-      toast({
-        title: "Error",
-        description: "Invalid email or password",
+        title: "Xato",
+        description: "Kirishda xatolik yuz berdi",
         variant: "destructive",
-      })
+      });
+    } finally {
+      setIsLoading(false);
     }
-  }
+  };
 
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault()
-
-    if (!registerName || !registerEmail || !registerPassword || !confirmPassword) {
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    try {
+      const result = await signIn("google", {
+        redirect: false,
+        callbackUrl: "/account",
+      });
+      if (result?.error) {
+        toast({
+          title: "Xato",
+          description: "Google orqali kirishda xatolik yuz berdi",
+          variant: "destructive",
+        });
+      }
+    } catch {
       toast({
-        title: "Error",
-        description: "Please fill in all fields",
+        title: "Xato",
+        description: "Google orqali kirishda xatolik yuz berdi",
         variant: "destructive",
-      })
-      return
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (
+      !registerName ||
+      !registerEmail ||
+      !registerPassword ||
+      !confirmPassword
+    ) {
+      toast({
+        title: "Xato",
+        description: "Iltimos, barcha maydonlarni to‘ldiring",
+        variant: "destructive",
+      });
+      return;
     }
 
     if (!agreeTerms) {
       toast({
-        title: "Error",
-        description: "You must agree to the Terms of Service and Privacy Policy",
+        title: "Xato",
+        description:
+          "Shartlar va Maxfiylik Siyosatiga rozilik berishingiz kerak",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
-    if (registerPassword.length < 6) {
+    const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*]).{6,}$/;
+    if (!passwordRegex.test(registerPassword)) {
       toast({
-        title: "Error",
-        description: "Password must be at least 6 characters long",
+        title: "Xato",
+        description:
+          "Parol kamida 6 belgi, raqam va maxsus belgidan iborat bo‘lishi kerak",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
     if (registerPassword !== confirmPassword) {
       toast({
-        title: "Error",
-        description: "Passwords do not match",
+        title: "Xato",
+        description: "Parollar mos kelmadi",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
-    const success = await register(registerName, registerEmail, registerPassword)
+    setIsLoading(true);
 
-    if (success) {
-      toast({
-        title: "Success",
-        description: `Welcome, ${registerName}! Your account has been created successfully.`,
-      })
-      router.push("/account")
-    } else {
-      toast({
-        title: "Error",
-        description: "Failed to create account. Please try again.",
-        variant: "destructive",
-      })
-    }
-  }
-
-  const handleGoogleLogin = async () => {
     try {
-      setGoogleLoading(true)
-      const success = await loginWithGoogle()
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: registerName,
+          email: registerEmail,
+          password: registerPassword,
+        }),
+      });
 
-      if (success) {
+      const data = await response.json();
+
+      if (response.ok) {
         toast({
-          title: "Success",
-          description: "You have been logged in with Google successfully",
-        })
-        // NextAuth will handle the redirect
+          title: "Muvaffaqiyat",
+          description:
+            data.message ||
+            `Xush kelibsiz, ${registerName}! Hisobingiz muvaffaqiyatli yaratildi.`,
+        });
+        router.push("/account");
       } else {
         toast({
-          title: "Error",
-          description: "Failed to login with Google. Please try again.",
+          title: "Xato",
+          description: data.message || "Ro‘yxatdan o‘tishda xatolik yuz berdi",
           variant: "destructive",
-        })
+        });
       }
-    } catch  {
+    } catch {
       toast({
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
+        title: "Xato",
+        description: "Server bilan aloqada xatolik",
         variant: "destructive",
-      })
+      });
     } finally {
-      setGoogleLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Breadcrumb */}
       <div className="flex items-center text-sm text-gray-500 mb-8">
         <Link href="/" className="hover:text-gray-700">
-          Home
+          Bosh sahifa
         </Link>
         <ChevronRight className="h-4 w-4 mx-2" />
-        <span className="text-gray-900">Sign In</span>
+        <span className="text-gray-900">Kirish</span>
       </div>
 
       <div className="max-w-md mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold">Welcome Back</h1>
-          <p className="text-gray-600 mt-2">Sign in to your account to continue</p>
+          <h1 className="text-3xl font-bold">Xush Kelibsiz</h1>
+          <p className="text-gray-600 mt-2">
+            Hisobingizga kirish uchun davom eting
+          </p>
         </div>
 
         <div className="bg-white rounded-lg shadow-sm border p-8">
-          <Tabs defaultValue="login" value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <Tabs
+            defaultValue="login"
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="w-full"
+          >
             <TabsList className="grid w-full grid-cols-2 mb-8">
-              <TabsTrigger value="login">Sign In</TabsTrigger>
-              <TabsTrigger value="register">Register</TabsTrigger>
+              <TabsTrigger value="login">Kirish</TabsTrigger>
+              <TabsTrigger value="register">Ro&apos;yxatdan o&apos;tish</TabsTrigger>
             </TabsList>
 
             <AnimatePresence mode="wait">
@@ -201,7 +279,7 @@ export default function AuthPage() {
                 transition={{ duration: 0.3 }}
               >
                 <TabsContent value="login" className="space-y-4">
-                  <form onSubmit={handleLogin}>
+                  <form onSubmit={handleLoginSubmit}>
                     <div className="space-y-2">
                       <Label htmlFor="email">Email</Label>
                       <div className="relative">
@@ -209,7 +287,7 @@ export default function AuthPage() {
                         <Input
                           id="email"
                           type="email"
-                          placeholder="Enter your email"
+                          placeholder="Emailingizni kiriting"
                           className="pl-10"
                           value={loginEmail}
                           onChange={(e) => setLoginEmail(e.target.value)}
@@ -220,9 +298,12 @@ export default function AuthPage() {
 
                     <div className="space-y-2 mt-4">
                       <div className="flex justify-between">
-                        <Label htmlFor="password">Password</Label>
-                        <Link href="/auth/forgot-password" className="text-sm text-gray-600 hover:text-gray-900">
-                          Forgot password?
+                        <Label htmlFor="password">Parol</Label>
+                        <Link
+                          href="/auth/forgot-password"
+                          className="text-sm text-gray-600 hover:text-gray-900"
+                        >
+                          Parolni unutdingizmi?
                         </Link>
                       </div>
                       <div className="relative">
@@ -230,7 +311,7 @@ export default function AuthPage() {
                         <Input
                           id="password"
                           type={showPassword ? "text" : "password"}
-                          placeholder="Enter your password"
+                          placeholder="Parolingizni kiriting"
                           className="pl-10 pr-10"
                           value={loginPassword}
                           onChange={(e) => setLoginPassword(e.target.value)}
@@ -241,7 +322,11 @@ export default function AuthPage() {
                           onClick={togglePasswordVisibility}
                           className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                         >
-                          {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                          {showPassword ? (
+                            <EyeOff className="h-5 w-5" />
+                          ) : (
+                            <Eye className="h-5 w-5" />
+                          )}
                         </button>
                       </div>
                     </div>
@@ -250,10 +335,12 @@ export default function AuthPage() {
                       <Checkbox
                         id="remember"
                         checked={rememberMe}
-                        onCheckedChange={(checked) => setRememberMe(checked as boolean)}
+                        onCheckedChange={(checked) =>
+                          setRememberMe(checked as boolean)
+                        }
                       />
                       <Label htmlFor="remember" className="text-sm">
-                        Remember me
+                        Meni eslab qol
                       </Label>
                     </div>
 
@@ -262,84 +349,59 @@ export default function AuthPage() {
                       className="w-full bg-gray-900 hover:bg-gray-800 text-white mt-6"
                       disabled={isLoading}
                     >
-                      {isLoading ? "Signing In..." : "Sign In"}
+                      {isLoading ? "Kirilmoqda..." : "Kirish"}
                     </Button>
                   </form>
 
-                  <div className="relative my-6">
+                  <div className="relative mt-6">
                     <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-gray-200" />
+                      <div className="w-full border-t border-gray-300" />
                     </div>
                     <div className="relative flex justify-center text-sm">
-                      <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                      <span className="bg-white px-2 text-gray-500">
+                        Yoki bilan davom eting
+                      </span>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 gap-4">
-                    <Button variant="outline" className="w-full" onClick={handleGoogleLogin} disabled={googleLoading}>
-                      {googleLoading ? (
-                        <div className="flex items-center justify-center">
-                          <svg
-                            className="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-500"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                          >
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              stroke="currentColor"
-                              strokeWidth="4"
-                            ></circle>
-                            <path
-                              className="opacity-75"
-                              fill="currentColor"
-                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                            ></path>
-                          </svg>
-                          Signing in with Google...
-                        </div>
-                      ) : (
-                        <>
-                          <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24">
-                            <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
-                              <path
-                                fill="#4285F4"
-                                d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z"
-                              />
-                              <path
-                                fill="#34A853"
-                                d="M -14.754 63.239 C -11.514 63.239 -8.804 62.159 -6.824 60.329 L -10.684 57.329 C -11.764 58.049 -13.134 58.489 -14.754 58.489 C -17.884 58.489 -20.534 56.379 -21.484 53.529 L -25.464 53.529 L -25.464 56.619 C -23.494 60.539 -19.444 63.239 -14.754 63.239 Z"
-                              />
-                              <path
-                                fill="#FBBC05"
-                                d="M -21.484 53.529 C -21.734 52.809 -21.864 52.039 -21.864 51.239 C -21.864 50.439 -21.724 49.669 -21.484 48.949 L -21.484 45.859 L -25.464 45.859 C -26.284 47.479 -26.754 49.299 -26.754 51.239 C -26.754 53.179 -26.284 54.999 -25.464 56.619 L -21.484 53.529 Z"
-                              />
-                              <path
-                                fill="#EA4335"
-                                d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z"
-                              />
-                            </g>
-                          </svg>
-                          Sign in with Google
-                        </>
-                      )}
-                    </Button>
-                  </div>
+                  <Button
+                    variant="outline"
+                    className="w-full mt-4 flex items-center justify-center gap-2"
+                    onClick={handleGoogleSignIn}
+                    disabled={isLoading}
+                  >
+                    <svg className="h-5 w-5" viewBox="0 0 24 24">
+                      <path
+                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.51h5.84c-.25 1.35-1.01 2.49-2.14 3.24v2.69h3.46c2.02-1.86 3.19-4.6 3.19-7.89z"
+                        fill="#4285F4"
+                      />
+                      <path
+                        d="M12 23.5c2.89 0 5.31-.94 7.08-2.55l-3.46-2.69c-.98.66-2.23 1.05-3.62 1.05-2.78 0-5.14-1.88-5.98-4.41H2.44v2.77C4.2 21.31 7.71 23.5 12 23.5z"
+                        fill="#34A853"
+                      />
+                      <path
+                        d="M6.02 14.09c-.21-.63-.33-1.3-.33-2.09s.12-1.46.33-2.09V7.14H2.44C1.58 8.62 1 10.28 1 12s.58 3.38 1.44 4.86l3.58-2.77z"
+                        fill="#FBBC05"
+                      />
+                      <path
+                        d="M12 5.5c1.59 0 3.01.55 4.12 1.62l3.09-3.09C17.31 2.38 14.89 1.5 12 1.5 7.71 1.5 4.2 3.87 2.44 7.14l3.58 2.77c.84-2.53 3.2-4.41 5.98-4.41z"
+                        fill="#EA4335"
+                      />
+                    </svg>
+                    Google bilan kirish
+                  </Button>
                 </TabsContent>
 
                 <TabsContent value="register" className="space-y-4">
-                  <form onSubmit={handleRegister}>
+                  <form onSubmit={handleRegisterSubmit}>
                     <div className="space-y-2">
-                      <Label htmlFor="register-name">Full Name</Label>
+                      <Label htmlFor="register-name">To&apos;liq ism</Label>
                       <div className="relative">
                         <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                         <Input
                           id="register-name"
                           type="text"
-                          placeholder="Enter your name"
+                          placeholder="Ismingizni kiriting"
                           className="pl-10"
                           value={registerName}
                           onChange={(e) => setRegisterName(e.target.value)}
@@ -355,7 +417,7 @@ export default function AuthPage() {
                         <Input
                           id="register-email"
                           type="email"
-                          placeholder="Enter your email"
+                          placeholder="Emailingizni kiriting"
                           className="pl-10"
                           value={registerEmail}
                           onChange={(e) => setRegisterEmail(e.target.value)}
@@ -365,13 +427,13 @@ export default function AuthPage() {
                     </div>
 
                     <div className="space-y-2 mt-4">
-                      <Label htmlFor="register-password">Password</Label>
+                      <Label htmlFor="register-password">Parol</Label>
                       <div className="relative">
                         <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                         <Input
                           id="register-password"
                           type={showPassword ? "text" : "password"}
-                          placeholder="Create a password"
+                          placeholder="Parol yarating"
                           className="pl-10 pr-10"
                           value={registerPassword}
                           onChange={(e) => setRegisterPassword(e.target.value)}
@@ -382,27 +444,45 @@ export default function AuthPage() {
                           onClick={togglePasswordVisibility}
                           className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                         >
-                          {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                          {showPassword ? (
+                            <EyeOff className="h-5 w-5" />
+                          ) : (
+                            <Eye className="h-5 w-5" />
+                          )}
                         </button>
                       </div>
                       <p className="text-xs text-gray-500">
-                        Password must be at least 6 characters long with a number and a special character.
+                        Parol kamida 6 belgi, raqam va maxsus belgidan iborat
+                        bo&apos;lishi kerak.
                       </p>
                     </div>
 
                     <div className="space-y-2 mt-4">
-                      <Label htmlFor="confirm-password">Confirm Password</Label>
+                      <Label htmlFor="confirm-password">
+                        Parolni tasdiqlang
+                      </Label>
                       <div className="relative">
                         <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                         <Input
                           id="confirm-password"
                           type={showPassword ? "text" : "password"}
-                          placeholder="Confirm your password"
+                          placeholder="Parolni tasdiqlang"
                           className="pl-10 pr-10"
                           value={confirmPassword}
                           onChange={(e) => setConfirmPassword(e.target.value)}
                           required
                         />
+                        <button
+                          type="button"
+                          onClick={togglePasswordVisibility}
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                        >
+                          {showPassword ? (
+                            <EyeOff className="h-5 w-5" />
+                          ) : (
+                            <Eye className="h-5 w-5" />
+                          )}
+                        </button>
                       </div>
                     </div>
 
@@ -410,18 +490,30 @@ export default function AuthPage() {
                       <Checkbox
                         id="terms"
                         checked={agreeTerms}
-                        onCheckedChange={(checked) => setAgreeTerms(checked as boolean)}
+                        onCheckedChange={(checked) =>
+                          setAgreeTerms(checked as boolean)
+                        }
                         required
                       />
-                      <Label htmlFor="terms" className="text-sm">
-                        I agree to the{" "}
-                        <Link href="/terms" className="text-gray-900 underline">
-                          Terms of Service
+                      <Label
+                        htmlFor="terms"
+                        className="text-sm text-gray-700 leading-tight whitespace-nowrap"
+                      >
+                        Men{" "}
+                        <Link
+                          href="/terms"
+                          className="text-gray-900 underline hover:text-gray-700 transition-colors duration-200"
+                        >
+                          Xizmat shartlari
                         </Link>{" "}
-                        and{" "}
-                        <Link href="/privacy" className="text-gray-900 underline">
-                          Privacy Policy
-                        </Link>
+                        va{" "}
+                        <Link
+                          href="/privacy"
+                          className="text-gray-900 underline hover:text-gray-700 transition-colors duration-200"
+                        >
+                          Maxfiylik siyosati
+                        </Link>{" "}
+                        ga roziman
                       </Label>
                     </div>
 
@@ -430,72 +522,48 @@ export default function AuthPage() {
                       className="w-full bg-gray-900 hover:bg-gray-800 text-white mt-6"
                       disabled={isLoading}
                     >
-                      {isLoading ? "Creating Account..." : "Create Account"}
+                      {isLoading ? "Hisob yaratilmoqda..." : "Hisob yaratish"}
                     </Button>
+IZES
                   </form>
 
-                  <div className="relative my-6">
+                  <div className="relative mt-6">
                     <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-gray-200" />
+                      <div className="w-full border-t border-gray-300" />
                     </div>
                     <div className="relative flex justify-center text-sm">
-                      <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                      <span className="bg-white px-2 text-gray-500">
+                        Yoki bilan davom eting
+                      </span>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 gap-4">
-                    <Button variant="outline" className="w-full" onClick={handleGoogleLogin} disabled={googleLoading}>
-                      {googleLoading ? (
-                        <div className="flex items-center justify-center">
-                          <svg
-                            className="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-500"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                          >
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              stroke="currentColor"
-                              strokeWidth="4"
-                            ></circle>
-                            <path
-                              className="opacity-75"
-                              fill="currentColor"
-                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                            ></path>
-                          </svg>
-                          Signing up with Google...
-                        </div>
-                      ) : (
-                        <>
-                          <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24">
-                            <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
-                              <path
-                                fill="#4285F4"
-                                d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z"
-                              />
-                              <path
-                                fill="#34A853"
-                                d="M -14.754 63.239 C -11.514 63.239 -8.804 62.159 -6.824 60.329 L -10.684 57.329 C -11.764 58.049 -13.134 58.489 -14.754 58.489 C -17.884 58.489 -20.534 56.379 -21.484 53.529 L -25.464 53.529 L -25.464 56.619 C -23.494 60.539 -19.444 63.239 -14.754 63.239 Z"
-                              />
-                              <path
-                                fill="#FBBC05"
-                                d="M -21.484 53.529 C -21.734 52.809 -21.864 52.039 -21.864 51.239 C -21.864 50.439 -21.724 49.669 -21.484 48.949 L -21.484 45.859 L -25.464 45.859 C -26.284 47.479 -26.754 49.299 -26.754 51.239 C -26.754 53.179 -26.284 54.999 -25.464 56.619 L -21.484 53.529 Z"
-                              />
-                              <path
-                                fill="#EA4335"
-                                d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z"
-                              />
-                            </g>
-                          </svg>
-                          Sign up with Google
-                        </>
-                      )}
-                    </Button>
-                  </div>
+                  <Button
+                    variant="outline"
+                    className="w-full mt-4 flex items-center justify-center gap-2"
+                    onClick={handleGoogleSignIn}
+                    disabled={isLoading}
+                  >
+                    <svg className="h-5 w-5" viewBox="0 0 24 24">
+                      <path
+                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.51h5.84c-.25 1.35-1.01 2.49-2.14 3.24v2.69h3.46c2.02-1.86 3.19-4.6 3.19-7.89z"
+                        fill="#4285F4"
+                      />
+                      <path
+                        d="M12 23.5c2.89 0 5.31-.94 7.08-2.55l-3.46-2.69c-.98.66-2.23 1.05-3.62 1.05-2.78 0-5.14-1.88-5.98-4.41H2.44v2.77C4.2 21.13 7.71 23.5 12 23.5z"
+                        fill="#34A853"
+                      />
+                      <path
+                        d="M6.02 14.09c-.21-.63-.33-1.3-.33-2.09s.12-1.46.33-2.09V7.14H2.44C1.58 8.62 1 10.28 1 12s.58 3.38 1.44 4.86l3.58-2.77z"
+                        fill="#FBBC05"
+                      />
+                      <path
+                        d="M12 5.5c1.59 0 3.01.55 4.12 1.62l3.09-3.09C17.31 2.38 14.89 1.5 12 1.5 7.71 1.5 4.2 3.87 2.44 7.14l3.58 2.77c.84-2.53 3.2-4.41 5.98-4.41z"
+                        fill="#EA4335"
+                      />
+                    </svg>
+                    Google bilan ro&apos;yxatdan o&apos;tish
+                  </Button>
                 </TabsContent>
               </motion.div>
             </AnimatePresence>
@@ -503,5 +571,5 @@ export default function AuthPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

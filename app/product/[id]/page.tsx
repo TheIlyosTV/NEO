@@ -698,7 +698,7 @@ const products: Product[] = [
     name: "Premium Leather Sneakers",
     price: 129.99,
     category: "shoes",
-    image: "/placeholder.svg?height=600&width=500",
+    image: "/images/Premium-Leather-Sneakers.png",
     rating: 4.7,
     reviewCount: 152,
     description:
@@ -717,10 +717,10 @@ const products: Product[] = [
     ],
     sizes: ["38", "39", "40", "41", "42", "43", "44", "45"],
     images: [
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600",
+      "/images/Premium-Leather-Sneakers.png",
+      "/images/Premium-Leather-Sneakers.png",
+      "/images/Premium-Leather-Sneakers.png",
+      "/images/Premium-Leather-Sneakers.png",
     ],
     reviews: [
       {
@@ -743,10 +743,10 @@ const products: Product[] = [
   },
   {
     id: 4,
-    name: "Minimalist Watch",
+    name: "Oversize Hudi",
     price: 159.99,
-    category: "accessories",
-    image: "/placeholder.svg?height=600&width=500",
+    category: "men",
+    image: "/images/men/Oversize-Hudi.png",
     rating: 4.9,
     reviewCount: 78,
     description:
@@ -763,12 +763,12 @@ const products: Product[] = [
       { name: "Brown/Gold", value: "brown" },
       { name: "Blue/Silver", value: "blue" },
     ],
-    sizes: ["36mm", "40mm", "42mm"],
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     images: [
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600",
+      "/images/men/Oversize-Hudi.png",
+      "/images/men/Oversize-Hudi.png",
+      "/images/men/Oversize-Hudi.png",
+      "/images/men/Oversize-Hudi.png",
     ],
     reviews: [
       {
@@ -789,6 +789,191 @@ const products: Product[] = [
       },
     ],
   },
+  {
+    id: 5,
+    name: "Tailored Wool Blazer",
+    price: 229.99,
+    category: "men",
+    image: "/images/men/Tailored-Wool-Blazer.png",
+    rating: 4.7,
+    reviewCount: 54,
+    description:
+      "Crafted from premium wool, this tailored blazer features a sleek silhouette, notched lapels, and a soft inner lining. Ideal for both formal and casual outfits.",
+    details: [
+      "100% premium wool",
+      "Soft inner lining",
+      "Notched lapels",
+      "Double-button closure",
+      "Dry clean only",
+    ],
+    colors: [
+      { name: "Charcoal Grey", value: "grey" },
+      { name: "Classic Black", value: "black" },
+      { name: "Navy Blue", value: "navy" },
+    ],
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    images: [
+      "/images/men/Tailored-Wool-Blazer.png",
+      "/images/men/Tailored-Wool-Blazer.png",
+      "/images/men/Tailored-Wool-Blazer.png",
+      "/images/men/Tailored-Wool-Blazer.png",
+    ],
+    reviews: [
+      {
+        id: 1,
+        author: "Emma Johnson",
+        rating: 5,
+        date: "2 months ago",
+        content: "Elegant and warm—perfect for fall and winter office days.",
+      },
+      {
+        id: 2,
+        author: "Sophia Lee",
+        rating: 4,
+        date: "3 weeks ago",
+        content:
+          "Great fit and quality, though the sleeves were a bit long for me.",
+      },
+    ],
+  },
+  {
+    id: 6,
+    name: "Pleated Midi Skirt",
+    price: 89.99,
+    category: "women",
+    image: "/images/women/Pleated-Midi-Skirt.png",
+    rating: 4.6,
+    reviewCount: 38,
+    description:
+      "A flowy and elegant midi skirt featuring crisp pleats and a high-waisted fit. Made from lightweight fabric for all-day comfort.",
+    details: [
+      "High-waisted design",
+      "Lightweight breathable fabric",
+      "Zipper closure at the side",
+      "Machine washable",
+      "Knee to mid-calf length",
+    ],
+    colors: [
+      { name: "Cream", value: "cream" },
+      { name: "Dusty Pink", value: "pink" },
+      { name: "Olive Green", value: "green" },
+    ],
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    images: [
+      "/images/women/Pleated-Midi-Skirt.png",
+      "/images/women/Pleated-Midi-Skirt.png",
+      "/images/women/Pleated-Midi-Skirt.png",
+      "/images/women/Pleated-Midi-Skirt.png",
+    ],
+    reviews: [
+      {
+        id: 1,
+        author: "Mia Williams",
+        rating: 5,
+        date: "1 month ago",
+        content: "So comfy and pretty! The pleats stay sharp after washing.",
+      },
+      {
+        id: 2,
+        author: "Isabella Clark",
+        rating: 4,
+        date: "2 weeks ago",
+        content: "Nice skirt but runs slightly large. I recommend sizing down.",
+      },
+    ],
+  },
+  {
+    id: 7,
+    name: "Suede Chelsea Boots",
+    price: 149.99,
+    category: "shoes",
+    image: "/images/shoes/Suede-Chelsea-Boots.png",
+    rating: 4.8,
+    reviewCount: 63,
+    description:
+      "Classic Chelsea boots made from genuine suede leather with elastic side panels and a durable sole. Stylish and versatile for any season.",
+    details: [
+      "Genuine suede upper",
+      "Elastic side panels",
+      "Slip-on style",
+      "Durable rubber outsole",
+      "Comfort insole",
+    ],
+    colors: [
+      { name: "Tan", value: "tan" },
+      { name: "Chocolate", value: "brown" },
+      { name: "Black", value: "black" },
+    ],
+    sizes: ["40", "41", "42", "43", "44", "45"],
+    images: [
+      "/images/shoes/Suede-Chelsea-Boots.png",
+      "/images/shoes/Suede-Chelsea-Boots.png",
+      "/images/shoes/Suede-Chelsea-Boots.png",
+      "/images/shoes/Suede-Chelsea-Boots.png",
+    ],
+    reviews: [
+      {
+        id: 1,
+        author: "Daniel Brooks",
+        rating: 5,
+        date: "1 month ago",
+        content: "High-quality suede, fits perfectly, and looks sharp.",
+      },
+      {
+        id: 2,
+        author: "Liam Turner",
+        rating: 4,
+        date: "2 weeks ago",
+        content: "Love the look. Slightly stiff at first but broke in quickly.",
+      },
+    ],
+  },
+  {
+    id: 8,
+    name: "Leather Crossbody Bag",
+    price: 119.99,
+    category: "women",
+    image: "/images/women/Leather-Crossbody-Bag.png",
+    rating: 4.9,
+    reviewCount: 47,
+    description:
+      "Compact and stylish, this genuine leather crossbody bag is designed for everyday use. Features adjustable strap and multiple compartments.",
+    details: [
+      "Genuine leather",
+      "Adjustable shoulder strap",
+      "Multiple compartments",
+      "Secure zip closure",
+      "Compact and lightweight",
+    ],
+    colors: [
+      { name: "Black", value: "black" },
+      { name: "Burgundy", value: "burgundy" },
+      { name: "Taupe", value: "taupe" },
+    ],
+    sizes: ["One Size"],
+    images: [
+      "/images/women/Leather-Crossbody-Bag.png",
+      "/images/women/Leather-Crossbody-Bag.png",
+      "/images/women/Leather-Crossbody-Bag.png",
+      "/images/women/Leather-Crossbody-Bag.png",
+    ],
+    reviews: [
+      {
+        id: 1,
+        author: "Chloe Martin",
+        rating: 5,
+        date: "3 weeks ago",
+        content: "Perfect size and very stylish. I get compliments all the time.",
+      },
+      {
+        id: 2,
+        author: "Ava Scott",
+        rating: 5,
+        date: "1 week ago",
+        content: "Love the quality and it fits all my essentials easily.",
+      },
+    ],
+  },  
   // Add the perfumery products from the perfumery page
   {
     id: "perfume-1",
@@ -2218,24 +2403,25 @@ const products: Product[] = [
     image: "/images/women/Oversized-Cotton-Shirt.png",
     rating: 4.5,
     reviewCount: 128,
-    description: "Relaxed-fit oversized shirt in soft, breathable cotton with a button-down collar and dropped shoulders for effortless style.",
+    description:
+      "This elegant minimalist watch features a clean dial design, premium stainless steel case, and genuine leather strap. Water-resistant and built to last, it's the perfect accessory for any occasion.",
     details: [
       "100% organic cotton",
       "Oversized fit",
       "Button-down collar",
       "Machine washable",
-      "Made in Portugal"
+      "Made in Portugal",
     ],
     colors: [
       { name: "White", value: "white" },
       { name: "Striped", value: "bluewhite" },
-      { name: "Chambray", value: "lightblue" }
+      { name: "Chambray", value: "lightblue" },
     ],
     sizes: ["XS", "S", "M", "L", "XL"],
     images: [
       "/images/women/Oversized-Cotton-Shirt.png",
       "/images/women/Oversized-Cotton-Shirt.png",
-      "/images/women/Oversized-Cotton-Shirt.png"
+      "/images/women/Oversized-Cotton-Shirt.png",
     ],
     reviews: [
       {
@@ -2243,16 +2429,18 @@ const products: Product[] = [
         author: "Emma Johnson",
         rating: 5,
         date: "2 weeks ago",
-        content: "Perfect oversized fit - not too boxy. The fabric is so soft and gets better with each wash."
+        content:
+          "Perfect oversized fit - not too boxy. The fabric is so soft and gets better with each wash.",
       },
       {
         id: 2,
         author: "Sophia Williams",
         rating: 4,
         date: "1 month ago",
-        content: "Love the shirt but the sleeves are longer than expected. Still keeping it though!"
-      }
-    ]
+        content:
+          "Love the shirt but the sleeves are longer than expected. Still keeping it though!",
+      },
+    ],
   },
   {
     id: "women-2",
@@ -2262,23 +2450,24 @@ const products: Product[] = [
     image: "/images/women/High-Waisted-Jeans.png",
     rating: 4.2,
     reviewCount: 215,
-    description: "Flattering high-waisted jeans with stretch technology that sculpts and lifts while providing all-day comfort.",
+    description:
+      "Flattering high-waisted jeans with stretch technology that sculpts and lifts while providing all-day comfort.",
     details: [
       "98% cotton, 2% elastane",
       "High-rise waist",
       "Slim straight leg",
       "Zip fly with button closure",
-      "Machine wash cold"
+      "Machine wash cold",
     ],
     colors: [
       { name: "Medium Wash", value: "mediumwash" },
       { name: "Black", value: "black" },
-      { name: "White", value: "white" }
+      { name: "White", value: "white" },
     ],
     sizes: ["24", "26", "28", "30", "32"],
     images: [
       "/images/women/High-Waisted-Jeans.png",
-      "/images/women/High-Waisted-Jeans.png"
+      "/images/women/High-Waisted-Jeans.png",
     ],
     reviews: [
       {
@@ -2286,16 +2475,18 @@ const products: Product[] = [
         author: "Olivia Brown",
         rating: 5,
         date: "3 weeks ago",
-        content: "Finally found jeans that don't gap at the waist! These are so flattering and comfortable."
+        content:
+          "Finally found jeans that don't gap at the waist! These are so flattering and comfortable.",
       },
       {
         id: 4,
         author: "Ava Jones",
         rating: 4,
         date: "2 months ago",
-        content: "Great quality but runs slightly small. Size up if between sizes."
-      }
-    ]
+        content:
+          "Great quality but runs slightly small. Size up if between sizes.",
+      },
+    ],
   },
   {
     id: "women-3",
@@ -2305,23 +2496,24 @@ const products: Product[] = [
     image: "/images/women/Knit-Sweater.png",
     rating: 4.7,
     reviewCount: 187,
-    description: "Cozy ribbed knit sweater with a relaxed fit and balloon sleeves for a stylish winter look.",
+    description:
+      "Cozy ribbed knit sweater with a relaxed fit and balloon sleeves for a stylish winter look.",
     details: [
       "50% cotton, 50% acrylic",
       "Oversized fit",
       "Balloon sleeves",
       "Machine wash cold",
-      "Imported"
+      "Imported",
     ],
     colors: [
       { name: "Cream", value: "cream" },
       { name: "Pink", value: "dustypink" },
-      { name: "Forest Green", value: "forestgreen" }
+      { name: "Forest Green", value: "forestgreen" },
     ],
     sizes: ["XS", "S", "M", "L"],
     images: [
       "/images/women/Knit-Sweater.png",
-      "/images/women/Knit-Sweater.png"
+      "/images/women/Knit-Sweater.png",
     ],
     reviews: [
       {
@@ -2329,16 +2521,18 @@ const products: Product[] = [
         author: "Isabella Garcia",
         rating: 5,
         date: "1 month ago",
-        content: "So soft and warm! The sleeves are dramatic in the best way. Gets lots of compliments."
+        content:
+          "So soft and warm! The sleeves are dramatic in the best way. Gets lots of compliments.",
       },
       {
         id: 6,
         author: "Mia Martinez",
         rating: 4,
         date: "3 weeks ago",
-        content: "Beautiful sweater but pills a bit after several wears. Still love it though."
-      }
-    ]
+        content:
+          "Beautiful sweater but pills a bit after several wears. Still love it though.",
+      },
+    ],
   },
   {
     id: "women-4",
@@ -2348,24 +2542,25 @@ const products: Product[] = [
     image: "/images/women/Midi-Dress.png",
     rating: 4.0,
     reviewCount: 96,
-    description: "Elegant midi-length dress with a wrap front, puff sleeves, and flattering A-line silhouette for any occasion.",
+    description:
+      "Elegant midi-length dress with a wrap front, puff sleeves, and flattering A-line silhouette for any occasion.",
     details: [
       "100% viscose",
       "Wrap front design",
       "Puff sleeves",
       "Machine wash delicate",
-      "Lined bodice"
+      "Lined bodice",
     ],
     colors: [
       { name: "Black", value: "black" },
       { name: "Floral Print", value: "floral" },
-      { name: "Emerald", value: "emerald" }
+      { name: "Emerald", value: "emerald" },
     ],
     sizes: ["XS", "S", "M", "L", "XL"],
     images: [
       "/images/women/Midi-Dress.png",
       "/images/women/Midi-Dress.png",
-      "/images/women/Midi-Dress.png"
+      "/images/women/Midi-Dress.png",
     ],
     reviews: [
       {
@@ -2373,43 +2568,46 @@ const products: Product[] = [
         author: "Charlotte Rodriguez",
         rating: 5,
         date: "2 weeks ago",
-        content: "Wore this to a wedding and got so many compliments! Flattering on all body types."
+        content:
+          "Wore this to a wedding and got so many compliments! Flattering on all body types.",
       },
       {
         id: 8,
         author: "Amelia Wilson",
         rating: 3,
         date: "1 month ago",
-        content: "Beautiful dress but the wrap doesn't stay closed very well. Needs a safety pin."
-      }
-    ]
+        content:
+          "Beautiful dress but the wrap doesn't stay closed very well. Needs a safety pin.",
+      },
+    ],
   },
   {
     id: "women-5",
     name: "Linen Blazer",
     price: 129.99,
     category: "women",
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/women/linen-blazer.png",
     rating: 4.8,
     reviewCount: 74,
-    description: "Tailored linen blazer with a relaxed fit, notch lapels, and functional pockets - perfect for summer layering.",
+    description:
+      "Tailored linen blazer with a relaxed fit, notch lapels, and functional pockets - perfect for summer layering.",
     details: [
       "100% linen",
       "Unlined construction",
       "Notch lapels",
       "Two front pockets",
-      "Dry clean recommended"
+      "Dry clean recommended",
     ],
     colors: [
       { name: "Beige", value: "beige" },
       { name: "Navy", value: "navy" },
-      { name: "Black", value: "black" }
+      { name: "Black", value: "black" },
     ],
     sizes: ["XS", "S", "M", "L", "XL"],
     images: [
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600"
+      "/images/women/linen-blazer.png",
+      "/images/women/linen-blazer.png",
+      "/images/women/linen-blazer.png",
     ],
     reviews: [
       {
@@ -2417,42 +2615,45 @@ const products: Product[] = [
         author: "Harper Lee",
         rating: 5,
         date: "3 weeks ago",
-        content: "Perfect summer blazer - lightweight but still structured enough to look professional."
+        content:
+          "Perfect summer blazer - lightweight but still structured enough to look professional.",
       },
       {
         id: 10,
         author: "Evelyn Clark",
         rating: 4,
         date: "2 months ago",
-        content: "Love the relaxed fit, but wrinkles very easily as expected with linen."
-      }
-    ]
+        content:
+          "Love the relaxed fit, but wrinkles very easily as expected with linen.",
+      },
+    ],
   },
   {
     id: "women-6",
     name: "Pleated Skirt",
     price: 69.99,
     category: "women",
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/women/Pleated-Skirt.png",
     rating: 4.3,
     reviewCount: 112,
-    description: "Flowy midi-length pleated skirt with an elasticated waistband for comfort and effortless movement.",
+    description:
+      "Flowy midi-length pleated skirt with an elasticated waistband for comfort and effortless movement.",
     details: [
       "100% polyester",
       "Elastic waistband",
       "Pleated design",
       "Machine wash cold",
-      "Knee-length"
+      "Knee-length",
     ],
     colors: [
       { name: "Black", value: "black" },
       { name: "Burgundy", value: "burgundy" },
-      { name: "Dusty Pink", value: "dustypink" }
+      { name: "Dusty Pink", value: "dustypink" },
     ],
     sizes: ["XS", "S", "M", "L"],
     images: [
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600"
+      "/images/women/Pleated-Skirt.png",
+      "/images/women/Pleated-Skirt.png",
     ],
     reviews: [
       {
@@ -2460,43 +2661,46 @@ const products: Product[] = [
         author: "Abigail Young",
         rating: 5,
         date: "1 month ago",
-        content: "So flattering and comfortable! The pleats hold their shape beautifully."
+        content:
+          "So flattering and comfortable! The pleats hold their shape beautifully.",
       },
       {
         id: 12,
         author: "Emily Hernandez",
         rating: 4,
         date: "3 weeks ago",
-        content: "Love the skirt but it's slightly sheer - need to wear with a slip."
-      }
-    ]
+        content:
+          "Love the skirt but it's slightly sheer - need to wear with a slip.",
+      },
+    ],
   },
   {
     id: "women-7",
     name: "Silk Blouse",
     price: 99.99,
     category: "women",
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/women/Silk-Blouse.png",
     rating: 4.6,
     reviewCount: 89,
-    description: "Luxurious silk blouse with a delicate pussybow tie neck and French cuffs for elegant styling options.",
+    description:
+      "Luxurious silk blouse with a delicate pussybow tie neck and French cuffs for elegant styling options.",
     details: [
       "100% mulberry silk",
       "Pussybow neckline",
       "French cuffs",
       "Dry clean only",
-      "Made in Italy"
+      "Made in Italy",
     ],
     colors: [
       { name: "Ivory", value: "ivory" },
       { name: "Blush", value: "blush" },
-      { name: "Navy", value: "navy" }
+      { name: "Navy", value: "navy" },
     ],
     sizes: ["XS", "S", "M", "L"],
     images: [
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600"
+      "/images/women/Silk-Blouse.png",
+      "/images/women/Silk-Blouse.png",
+      "/images/women/Silk-Blouse.png",
     ],
     reviews: [
       {
@@ -2504,42 +2708,45 @@ const products: Product[] = [
         author: "Elizabeth King",
         rating: 5,
         date: "2 weeks ago",
-        content: "Worth every penny. The silk quality is exceptional and it drapes beautifully."
+        content:
+          "Worth every penny. The silk quality is exceptional and it drapes beautifully.",
       },
       {
         id: 14,
         author: "Sofia Lopez",
         rating: 4,
         date: "1 month ago",
-        content: "Gorgeous blouse but the bow is tricky to tie evenly. Still love it though!"
-      }
-    ]
+        content:
+          "Gorgeous blouse but the bow is tricky to tie evenly. Still love it though!",
+      },
+    ],
   },
   {
     id: "women-8",
     name: "Wide-Leg Trousers",
     price: 89.99,
     category: "women",
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/women/Wide-Leg-Trousers.png",
     rating: 3.9,
     reviewCount: 67,
-    description: "Tailored wide-leg trousers with a high waist and clean lines for a polished, sophisticated look.",
+    description:
+      "Tailored wide-leg trousers with a high waist and clean lines for a polished, sophisticated look.",
     details: [
       "65% polyester, 30% viscose, 5% elastane",
       "High-waisted",
       "Wide leg silhouette",
       "Crease-resistant",
-      "Machine wash cold"
+      "Machine wash cold",
     ],
     colors: [
       { name: "Black", value: "black" },
       { name: "Cream", value: "cream" },
-      { name: "Pinstripe", value: "pinstripe" }
+      { name: "Pinstripe", value: "pinstripe" },
     ],
     sizes: ["00", "0", "2", "4", "6", "8", "10"],
     images: [
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600"
+      "/images/women/Wide-Leg-Trousers.png",
+      "/images/women/Wide-Leg-Trousers.png",
     ],
     reviews: [
       {
@@ -2547,16 +2754,18 @@ const products: Product[] = [
         author: "Victoria Scott",
         rating: 4,
         date: "3 weeks ago",
-        content: "Very flattering cut and comfortable waistband. Runs slightly long."
+        content:
+          "Very flattering cut and comfortable waistband. Runs slightly long.",
       },
       {
         id: 16,
         author: "Madison Green",
         rating: 3,
         date: "2 months ago",
-        content: "Nice fabric but the sizing is inconsistent. Had to exchange for a different size."
-      }
-    ]
+        content:
+          "Nice fabric but the sizing is inconsistent. Had to exchange for a different size.",
+      },
+    ],
   },
   // Add the Shoes products from the Shoes page
   {
@@ -2564,27 +2773,28 @@ const products: Product[] = [
     name: "Leather Loafers",
     price: 129.99,
     category: "shoes",
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/shoes/Leather-Loafers.png",
     rating: 4.5,
     reviewCount: 142,
-    description: "Classic penny loafers crafted from premium leather with a comfortable cushioned insole and durable rubber sole.",
+    description:
+      "Classic penny loafers crafted from premium leather with a comfortable cushioned insole and durable rubber sole.",
     details: [
       "Genuine leather upper",
       "Rubber sole",
       "Cushioned insole",
       "Slip-on style",
-      "Made in Italy"
+      "Made in Italy",
     ],
     colors: [
       { name: "Dark Brown", value: "#5c3a21" },
       { name: "Black", value: "#000000" },
-      { name: "Burgundy", value: "#800020" }
+      { name: "Burgundy", value: "#800020" },
     ],
     sizes: ["6", "7", "8", "9", "10", "11"],
     images: [
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600"
+      "/images/shoes/Leather-Loafers.png",
+      "/images/shoes/Leather-Loafers.png",
+      "/images/shoes/Leather-Loafers.png",
     ],
     reviews: [
       {
@@ -2592,43 +2802,46 @@ const products: Product[] = [
         author: "Michael Johnson",
         rating: 5,
         date: "3 weeks ago",
-        content: "Extremely comfortable right out of the box. The leather quality is exceptional."
+        content:
+          "Extremely comfortable right out of the box. The leather quality is exceptional.",
       },
       {
         id: 2,
         author: "David Wilson",
         rating: 4,
         date: "1 month ago",
-        content: "Great shoes but run slightly narrow. Had to break them in for a week."
-      }
-    ]
+        content:
+          "Great shoes but run slightly narrow. Had to break them in for a week.",
+      },
+    ],
   },
   {
     id: "shoes-2",
     name: "Canvas Sneakers",
     price: 79.99,
     category: "shoes",
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/shoes/Canvas-Sneakers.png",
     rating: 4.2,
     reviewCount: 198,
-    description: "Casual low-top sneakers with canvas upper and vulcanized rubber sole for everyday comfort and style.",
+    description:
+      "Casual low-top sneakers with canvas upper and vulcanized rubber sole for everyday comfort and style.",
     details: [
       "100% cotton canvas",
       "Vulcanized rubber sole",
       "Lace-up closure",
       "Reinforced toe cap",
-      "Machine washable"
+      "Machine washable",
     ],
     colors: [
       { name: "White", value: "#ffffff" },
       { name: "Black", value: "#000000" },
       { name: "Navy", value: "#000080" },
-      { name: "Red", value: "#ff0000" }
+      { name: "Red", value: "#ff0000" },
     ],
     sizes: ["5", "6", "7", "8", "9", "10", "11", "12"],
     images: [
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600"
+      "/images/shoes/Canvas-Sneakers.png",
+      "/images/shoes/Canvas-Sneakers.png",
     ],
     reviews: [
       {
@@ -2636,43 +2849,45 @@ const products: Product[] = [
         author: "James Brown",
         rating: 5,
         date: "2 weeks ago",
-        content: "Perfect everyday sneakers. Comfortable and go with everything."
+        content:
+          "Perfect everyday sneakers. Comfortable and go with everything.",
       },
       {
         id: 4,
         author: "Robert Taylor",
         rating: 3,
         date: "2 months ago",
-        content: "Good quality but the sole wears out quickly with daily use."
-      }
-    ]
+        content: "Good quality but the sole wears out quickly with daily use.",
+      },
+    ],
   },
   {
     id: "shoes-3",
     name: "Ankle Boots",
     price: 149.99,
     category: "shoes",
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/shoes/Ankle-Boots.png",
     rating: 4.7,
     reviewCount: 87,
-    description: "Chic leather ankle boots with a block heel, side zipper, and cushioned footbed for all-day comfort.",
+    description:
+      "Chic leather ankle boots with a block heel, side zipper, and cushioned footbed for all-day comfort.",
     details: [
       "Genuine leather upper",
       "2.5 inch block heel",
       "Side zipper closure",
       "Cushioned insole",
-      "Leather lining"
+      "Leather lining",
     ],
     colors: [
       { name: "Black", value: "#000000" },
       { name: "Taupe", value: "#b38b6d" },
-      { name: "Dark Brown", value: "#5c3a21" }
+      { name: "Dark Brown", value: "#5c3a21" },
     ],
     sizes: ["5", "6", "7", "8", "9", "10"],
     images: [
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600"
+      "/images/shoes/Ankle-Boots.png",
+      "/images/shoes/Ankle-Boots.png",
+      "/images/shoes/Ankle-Boots.png",
     ],
     reviews: [
       {
@@ -2680,42 +2895,45 @@ const products: Product[] = [
         author: "Jennifer Adams",
         rating: 5,
         date: "1 month ago",
-        content: "Worth every penny! Comfortable enough to wear all day at work."
+        content:
+          "Worth every penny! Comfortable enough to wear all day at work.",
       },
       {
         id: 6,
         author: "Sarah Miller",
         rating: 4,
         date: "3 weeks ago",
-        content: "Beautiful boots but the leather scuffs easily. Need to polish regularly."
-      }
-    ]
+        content:
+          "Beautiful boots but the leather scuffs easily. Need to polish regularly.",
+      },
+    ],
   },
   {
     id: "shoes-4",
     name: "Strappy Sandals",
     price: 89.99,
     category: "shoes",
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/shoes/Strappy-Sandals.png",
     rating: 4.0,
     reviewCount: 113,
-    description: "Elegant strappy sandals with adjustable ankle straps and a comfortable low heel for summer occasions.",
+    description:
+      "Elegant strappy sandals with adjustable ankle straps and a comfortable low heel for summer occasions.",
     details: [
       "Genuine leather straps",
       "1.5 inch heel",
       "Adjustable buckle closure",
       "Padded footbed",
-      "Synthetic sole"
+      "Synthetic sole",
     ],
     colors: [
       { name: "Nude", value: "#f5d0b9" },
       { name: "Black", value: "#000000" },
-      { name: "Gold", value: "#ffd700" }
+      { name: "Gold", value: "#ffd700" },
     ],
     sizes: ["5", "6", "7", "8", "9"],
     images: [
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600"
+      "/images/shoes/Strappy-Sandals.png",
+      "/images/shoes/Strappy-Sandals.png",
     ],
     reviews: [
       {
@@ -2723,43 +2941,45 @@ const products: Product[] = [
         author: "Emily Clark",
         rating: 4,
         date: "2 weeks ago",
-        content: "Pretty sandals that are comfortable for several hours of wear."
+        content:
+          "Pretty sandals that are comfortable for several hours of wear.",
       },
       {
         id: 8,
         author: "Jessica Wilson",
         rating: 3,
         date: "1 month ago",
-        content: "The straps dig in after a while. Not great for all-day wear."
-      }
-    ]
+        content: "The straps dig in after a while. Not great for all-day wear.",
+      },
+    ],
   },
   {
     id: "shoes-5",
     name: "Running Shoes",
     price: 119.99,
     category: "shoes",
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/shoes/Running-Shoes.png",
     rating: 4.8,
     reviewCount: 231,
-    description: "High-performance running shoes with responsive cushioning, breathable mesh upper, and durable rubber outsole.",
+    description:
+      "High-performance running shoes with responsive cushioning, breathable mesh upper, and durable rubber outsole.",
     details: [
       "Breathable mesh upper",
       "Responsive foam midsole",
       "Rubber traction outsole",
       "Removable insole",
-      "Lightweight design"
+      "Lightweight design",
     ],
     colors: [
       { name: "Black/Red", value: "#000000/#ff0000" },
       { name: "White/Blue", value: "#ffffff/#0000ff" },
-      { name: "Gray/Orange", value: "#808080/#ffa500" }
+      { name: "Gray/Orange", value: "#808080/#ffa500" },
     ],
     sizes: ["6", "7", "8", "9", "10", "11", "12"],
     images: [
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600"
+      "/images/shoes/Running-Shoes.png",
+      "/images/shoes/Running-Shoes.png",
+      "/images/shoes/Running-Shoes.png",
     ],
     reviews: [
       {
@@ -2767,42 +2987,44 @@ const products: Product[] = [
         author: "Daniel Moore",
         rating: 5,
         date: "3 weeks ago",
-        content: "Best running shoes I've owned. Great support and cushioning."
+        content: "Best running shoes I've owned. Great support and cushioning.",
       },
       {
         id: 10,
         author: "Christopher Lee",
         rating: 5,
         date: "2 months ago",
-        content: "Perfect for my marathon training. No blisters even on long runs."
-      }
-    ]
+        content:
+          "Perfect for my marathon training. No blisters even on long runs.",
+      },
+    ],
   },
   {
     id: "shoes-6",
     name: "Slip-On Mules",
     price: 99.99,
     category: "shoes",
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/shoes/Slip-On-Mules.png",
     rating: 4.3,
     reviewCount: 97,
-    description: "Trendy slip-on mules with a square toe, chunky heel, and soft faux fur lining for comfort and style.",
+    description:
+      "Trendy slip-on mules with a square toe, chunky heel, and soft faux fur lining for comfort and style.",
     details: [
       "Suede upper",
       "2 inch chunky heel",
       "Faux fur lining",
       "Slip-on design",
-      "Synthetic sole"
+      "Synthetic sole",
     ],
     colors: [
       { name: "Cream", value: "#fffdd0" },
       { name: "Black", value: "#000000" },
-      { name: "Taupe", value: "#b38b6d" }
+      { name: "Taupe", value: "#b38b6d" },
     ],
     sizes: ["5", "6", "7", "8", "9"],
     images: [
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600"
+      "/images/shoes/Slip-On-Mules.png",
+      "/images/shoes/Slip-On-Mules.png",
     ],
     reviews: [
       {
@@ -2810,43 +3032,45 @@ const products: Product[] = [
         author: "Olivia Martin",
         rating: 4,
         date: "1 month ago",
-        content: "Super comfortable and stylish. The fur lining makes them cozy."
+        content:
+          "Super comfortable and stylish. The fur lining makes them cozy.",
       },
       {
         id: 12,
         author: "Sophia White",
         rating: 3,
         date: "3 weeks ago",
-        content: "Cute but the heel makes a clicking sound when walking."
-      }
-    ]
+        content: "Cute but the heel makes a clicking sound when walking.",
+      },
+    ],
   },
   {
     id: "shoes-7",
     name: "Platform Heels",
     price: 139.99,
     category: "shoes",
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/shoes/Platform-Heels.png",
     rating: 4.6,
     reviewCount: 78,
-    description: "Statement platform heels with a chunky sole, pointed toe, and adjustable ankle strap for secure fit.",
+    description:
+      "Statement platform heels with a chunky sole, pointed toe, and adjustable ankle strap for secure fit.",
     details: [
       "Faux leather upper",
       "4 inch platform heel",
       "Adjustable ankle strap",
       "Pointed toe",
-      "Synthetic sole"
+      "Synthetic sole",
     ],
     colors: [
       { name: "Black", value: "#000000" },
       { name: "White", value: "#ffffff" },
-      { name: "Leopard Print", value: "#d4a017/#000000" }
+      { name: "Leopard Print", value: "#d4a017/#000000" },
     ],
     sizes: ["5", "6", "7", "8", "9"],
     images: [
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600"
+      "/images/shoes/Platform-Heels.png",
+      "/images/shoes/Platform-Heels.png",
+      "/images/shoes/Platform-Heels.png",
     ],
     reviews: [
       {
@@ -2854,60 +3078,61 @@ const products: Product[] = [
         author: "Ava Thompson",
         rating: 5,
         date: "2 weeks ago",
-        content: "Surprisingly comfortable for such high heels. Got tons of compliments!"
+        content:
+          "Surprisingly comfortable for such high heels. Got tons of compliments!",
       },
       {
         id: 14,
         author: "Isabella Harris",
         rating: 4,
         date: "1 month ago",
-        content: "Stunning shoes but take some time to break in. Worth it though."
-      }
-    ]
+        content:
+          "Stunning shoes but take some time to break in. Worth it though.",
+      },
+    ],
   },
   {
     id: "shoes-8",
     name: "Espadrilles",
     price: 69.99,
     category: "shoes",
-    image: "/placeholder.svg?height=400&width=300",
+    image: "/images/shoes/Espadrilles.png",
     rating: 3.9,
     reviewCount: 64,
-    description: "Classic canvas espadrilles with jute-wrapped wedge and comfortable cotton lining for summer wear.",
+    description:
+      "Classic canvas espadrilles with jute-wrapped wedge and comfortable cotton lining for summer wear.",
     details: [
       "Cotton canvas upper",
       "Jute-wrapped wedge",
       "1.5 inch heel",
       "Elastic gore panels",
-      "Textile lining"
+      "Textile lining",
     ],
     colors: [
       { name: "Natural", value: "#f5e8d0" },
       { name: "Striped", value: "blue/white" },
-      { name: "Black", value: "#000000" }
+      { name: "Black", value: "#000000" },
     ],
     sizes: ["5", "6", "7", "8", "9"],
-    images: [
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600"
-    ],
+    images: ["/images/shoes/Espadrilles.png", "/images/shoes/Espadrilles.png"],
     reviews: [
       {
         id: 15,
         author: "Mia Lewis",
         rating: 4,
         date: "3 weeks ago",
-        content: "Cute summer shoes but not very supportive for long walks."
+        content: "Cute summer shoes but not very supportive for long walks.",
       },
       {
         id: 16,
         author: "Charlotte Walker",
         rating: 3,
         date: "2 months ago",
-        content: "The jute started unraveling after just a few wears. Disappointed."
-      }
-    ]
-  }
+        content:
+          "The jute started unraveling after just a few wears. Disappointed.",
+      },
+    ],
+  },
 ];
 
 // Update the ProductPage component to handle string IDs
