@@ -6,8 +6,9 @@ import { Product } from "@/app/product/[id]/page";
 import ProductCard from "@/components/product-card";
 import { useLanguage } from "@/context/language-context";
 import Link from "next/link";
+import { Suspense } from 'react';
 
-export default function SearchPage() {
+function SearchResults() {
   const searchParams = useSearchParams();
   const query = searchParams.get("q");
   const [results, setResults] = useState<Product[]>([]);
@@ -2897,7 +2898,7 @@ export default function SearchPage() {
   }, [query]);
 
   return (
-    <div className="container mx-auto px-4 py-8 min-h-screen">
+<div className="container mx-auto px-4 py-8 min-h-screen">
       <h1 className="text-2xl font-bold mb-6">
         {t.searchResultsFor || "Qidiruv natijalari"}: &quot;{query}&quot;
       </h1>
@@ -2923,5 +2924,17 @@ export default function SearchPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
+      </div>
+    }>
+      <SearchResults />
+    </Suspense>
   );
 }
