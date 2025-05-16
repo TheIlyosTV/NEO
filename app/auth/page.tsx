@@ -53,17 +53,13 @@ export default function AuthPage() {
   }, []);
 
   useEffect(() => {
-    if (session && window.location.pathname === "/auth") {
+    if (session?.user && window.location.pathname === "/auth") {
       const userData = {
-        email: session.user?.email || "",
-        isAdmin: session.user?.email === VALID_ADMIN_EMAIL,
+        email: session.user.email || "",
+        isAdmin: session.user.email === VALID_ADMIN_EMAIL,
       };
       localStorage.setItem("loggedInUser", JSON.stringify(userData));
-      if (userData.isAdmin) {
-        router.push("/admin/dashboard");
-      } else {
-        router.push("/account");
-      }
+      router.push(userData.isAdmin ? "/admin/dashboard" : "/account");
     }
   }, [session, router]);
 
@@ -132,7 +128,6 @@ export default function AuthPage() {
         redirect: false,
         callbackUrl: "/account",
       });
-      
       if (result?.error) {
         toast({
           title: "Xato",
@@ -140,14 +135,7 @@ export default function AuthPage() {
           variant: "destructive",
         });
       } else if (result?.url) {
-        router.push(result.url); // 👈 bu yo'naltirishni qo'shing
-      }      
-      if (result?.error) {
-        toast({
-          title: "Xato",
-          description: "Google orqali kirishda xatolik yuz berdi",
-          variant: "destructive",
-        });
+        router.push(result.url);
       }
     } catch {
       toast({
@@ -277,7 +265,9 @@ export default function AuthPage() {
           >
             <TabsList className="grid w-full grid-cols-2 mb-8">
               <TabsTrigger value="login">Kirish</TabsTrigger>
-              <TabsTrigger value="register">Ro&apos;yxatdan o&apos;tish</TabsTrigger>
+              <TabsTrigger value="register">
+                Ro&apos;yxatdan o&apos;tish
+              </TabsTrigger>
             </TabsList>
 
             <AnimatePresence mode="wait">
@@ -534,7 +524,6 @@ export default function AuthPage() {
                     >
                       {isLoading ? "Hisob yaratilmoqda..." : "Hisob yaratish"}
                     </Button>
-IZES
                   </form>
 
                   <div className="relative mt-6">
