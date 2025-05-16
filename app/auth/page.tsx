@@ -132,6 +132,16 @@ export default function AuthPage() {
         redirect: false,
         callbackUrl: "/account",
       });
+      
+      if (result?.error) {
+        toast({
+          title: "Xato",
+          description: "Google orqali kirishda xatolik yuz berdi",
+          variant: "destructive",
+        });
+      } else if (result?.url) {
+        router.push(result.url); // 👈 bu yo'naltirishni qo'shing
+      }      
       if (result?.error) {
         toast({
           title: "Xato",
